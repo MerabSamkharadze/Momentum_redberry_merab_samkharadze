@@ -1,4 +1,7 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/ka";
 
 export type Department = {
   id: number;
@@ -33,19 +36,16 @@ export type Task = {
   employee: Employee;
   status: Status;
   priority: Priority;
-  total_comments: number;
+  total_comments?: number;
 };
 
-export type TaskCardProps = {
+type TaskCardProps = {
   task: Task;
+  column_name: string;
 };
 
-export default function TaskCard({ task }: TaskCardProps) {
-  const formattedDate = new Date(task.due_date).toLocaleDateString("ka-GE", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+export default function TaskCard({ task, column_name }: TaskCardProps) {
+  const formattedDate = dayjs(task.due_date).locale("ka").format("D MMMM YYYY");
 
   const getDepartmentName = (name: string) => {
     const departmentMap: Record<string, string> = {
@@ -60,9 +60,27 @@ export default function TaskCard({ task }: TaskCardProps) {
 
     return departmentMap[name] || name;
   };
+  const backgroundColors = ["#FF66A8", "#FD9A6D", "#89B6FF", "#FFD86D"];
+  const [randomBgColor, setRandomBgColor] = useState<string>("");
+
+  useEffect(() => {
+    const randomColor =
+      backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
+    setRandomBgColor(randomColor);
+  }, []);
 
   return (
-    <div className="p-5 bg-white rounded-[15px] border border-gray-200 shadow-sm flex flex-col gap-7 w-[381px]">
+    <div
+      className={`p-5 bg-white rounded-[15px] border  shadow-sm flex flex-col gap-7 w-[381px] ${
+        column_name === "დასაწყები"
+          ? "border-[#FFC107]"
+          : column_name === "პროგრესიში"
+          ? "border-[#FB5607]"
+          : column_name === "მზად ტესტირებისთვის"
+          ? "border-[#FF006E]"
+          : "border-[#3A86FF]"
+      }`}
+    >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1 px-2 py-1 border rounded-md">
@@ -74,7 +92,10 @@ export default function TaskCard({ task }: TaskCardProps) {
             <span className="text-xs text-gray-700">{task.priority.name}</span>
           </div>
 
-          <div className=" px-[9px] py-[5px] bg-[#ff66a8] rounded-[15px] flex justify-center items-center">
+          <div
+            style={{ backgroundColor: randomBgColor }}
+            className=" px-[9px] py-[5px] rounded-[15px] flex justify-center items-center"
+          >
             <span className="text-white text-xs font-normal">
               {getDepartmentName(task.department.name)}
             </span>
