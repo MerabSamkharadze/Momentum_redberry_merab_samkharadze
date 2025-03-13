@@ -21,6 +21,7 @@ export async function GET() {
     const formattedEmployees = employees.map((emp: any) => ({
       id: emp.id,
       name: `${emp.name} ${emp.surname}`,
+      avatar: emp.avatar,
     }));
 
     return NextResponse.json(formattedEmployees);

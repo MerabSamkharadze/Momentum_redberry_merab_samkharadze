@@ -5,7 +5,6 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // Query parameters as arrays (multiple selection)
     const priorityFilter =
       searchParams.get("priority")?.split(",").map(Number) || [];
     const departmentFilter =
@@ -13,7 +12,6 @@ export async function GET(request: Request) {
     const employeeFilter =
       searchParams.get("employee")?.split(",").map(Number) || [];
 
-    // Fetch tasks from external API
     const res = await fetch(
       "https://momentum.redberryinternship.ge/api/tasks",
       {
@@ -30,7 +28,6 @@ export async function GET(request: Request) {
 
     let tasks: Task[] = await res.json();
 
-    // Apply filters (checking if task.id is included in selected filters)
     if (priorityFilter.length > 0) {
       tasks = tasks.filter((task) =>
         priorityFilter.includes(task.priority?.id)
@@ -47,7 +44,6 @@ export async function GET(request: Request) {
       );
     }
 
-    // Group tasks by status
     const statuses = [
       { id: 1, name: "დასაწყები", tasks: [] as Task[] },
       { id: 2, name: "პროგრესში", tasks: [] as Task[] },

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 type CheckerProps = {
-  items: { id: number; name: string }[];
+  items: { id: number; name: string; avatar?: string }[];
   initialSelected: number[];
   onSubmit: (selected: number[]) => void;
   onClose: () => void;
@@ -44,7 +44,14 @@ export default function Checker({
                 onChange={() => handleCheckboxChange(item.id)}
                 className="w-5 h-5 rounded-md border border-neutral-800"
               />
-              {item.name}
+              <div className="flex gap-2 items-center">
+                {item.avatar && (
+                  <div className=" w-[50px] h-[50px] rounded-full overflow-hidden">
+                    <img src={item.avatar} alt={item.name} />
+                  </div>
+                )}
+                <span>{item.name}</span>
+              </div>
             </label>
           </div>
         ))}

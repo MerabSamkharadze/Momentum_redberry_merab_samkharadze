@@ -26,27 +26,51 @@ export default function Sort() {
     { id: 3, name: "მაღალი" },
   ];
 
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/employees");
+        if (!response.ok) {
+          throw new Error("Failed to fetch employees");
+        }
+        const data = await response.json();
+        setEmployees(data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
+
   const initialDepartments = searchParams.get("department")
     ? searchParams.get("department")!.split(",").map(Number)
     : [];
   const initialPriorities = searchParams.get("priority")
     ? searchParams.get("priority")!.split(",").map(Number)
     : [];
+  const initialEmployees = searchParams.get("employee")
+    ? searchParams.get("employee")!.split(",").map(Number)
+    : [];
 
   const [selectedOptions, setSelectedOptions] = useState<{
     departments: number[];
     priorities: number[];
+    employee: number[];
   }>({
     departments: initialDepartments,
     priorities: initialPriorities,
+    employee: initialEmployees,
   });
 
   const [activeButton, setActiveButton] = useState<ButtonGroup | null>(null);
   const [activeGroup, setActiveGroup] = useState<
-    "departments" | "priorities" | null
+    "departments" | "priorities" | "employee" | null
   >(null);
   const [currentItems, setCurrentItems] = useState<
-    { id: number; name: string }[]
+    { id: number; name: string; avatar?: string }[]
   >([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,6 +83,10 @@ export default function Sort() {
     } else if (group === "priorities") {
       setActiveGroup("priorities");
       setCurrentItems(priorities);
+      setIsOpen(true);
+    } else if (group === "employees") {
+      setActiveGroup("employee");
+      setCurrentItems(employees);
       setIsOpen(true);
     } else {
       setActiveGroup(null);
@@ -78,7 +106,7 @@ export default function Sort() {
   };
 
   const handleClear = () => {
-    setSelectedOptions({ departments: [], priorities: [] });
+    setSelectedOptions({ departments: [], priorities: [], employee: [] });
     setActiveButton(null);
     setActiveGroup(null);
     setIsOpen(false);
@@ -92,6 +120,9 @@ export default function Sort() {
     }
     if (selectedOptions.priorities.length > 0) {
       params.set("priority", selectedOptions.priorities.join(","));
+    }
+    if (selectedOptions.employee.length > 0) {
+      params.set("employee", selectedOptions.employee.join(","));
     }
 
     router.replace(`?${params.toString()}`);
@@ -144,6 +175,31 @@ export default function Sort() {
               <Down
                 className={
                   activeButton === "priorities"
+                    ? "fill-[#8338ec]"
+                    : "fill-[#0d0e10]"
+                }
+              />
+            </span>
+          </button>
+        </div>
+        <div className="w-[199px] h-11 relative">
+          <button
+            onClick={() => handleButtonClick("employees")}
+            className="w-[199px] h-11 px-[18px] py-2.5 absolute bg-white rounded-[10px] inline-flex justify-between items-center"
+          >
+            <div
+              className={`text-base ${
+                activeButton === "employees"
+                  ? "text-[#8338ec]"
+                  : "text-[#0d0e10]"
+              }`}
+            >
+              თანამშრომელი
+            </div>
+            <span className="w-6 h-6">
+              <Down
+                className={
+                  activeButton === "employees"
                     ? "fill-[#8338ec]"
                     : "fill-[#0d0e10]"
                 }
