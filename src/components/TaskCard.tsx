@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/ka";
+import Link from "next/link";
 
 export type Department = {
   id: number;
@@ -70,7 +71,8 @@ export default function TaskCard({ task, column_name }: TaskCardProps) {
   }, []);
 
   return (
-    <div
+    <Link
+      href={`/tasks/${task.id}`}
       className={`p-5 bg-white rounded-[15px] border  shadow-sm flex flex-col gap-7 w-[381px] ${
         column_name === "დასაწყები"
           ? "border-[#FFC107]"
@@ -118,6 +120,6 @@ export default function TaskCard({ task, column_name }: TaskCardProps) {
           <span>{task.total_comments}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

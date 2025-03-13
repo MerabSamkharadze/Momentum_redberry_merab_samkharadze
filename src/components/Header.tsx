@@ -32,7 +32,11 @@ export default function Header() {
           href="/createNewTask"
           className="px-5 py-2.5 bg-[#8338ec] rounded-[5px] flex justify-center items-center gap-1"
         >
-          <div className="w-5 h-5 text-white relative">+</div>
+          <div className="w-5 h-5 relative">
+            <div className="w-2.5 h-0 left-[5px] top-[10px] absolute  outline-[1.50px] outline-offset-[-0.75px] outline-white" />
+            <div className="w-0 h-2.5 left-[10px] top-[5px] absolute  outline-[1.50px] outline-offset-[-0.75px] outline-white" />
+            <div className="w-5 h-5 left-0 top-0 absolute opacity-0" />
+          </div>
           <div className="flex gap-3 text-white text-base font-normal font-sans">
             შექმენი ახალი დავალება
           </div>
