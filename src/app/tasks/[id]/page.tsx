@@ -1,7 +1,12 @@
 import Comentars from "@/components/Comentars";
 import React from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/ka";
+import weekday from "dayjs/plugin/weekday";
+import localeData from "dayjs/plugin/localeData";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const res = await fetch(
     `https://momentum.redberryinternship.ge/api/tasks/${params.id}`,
     {
@@ -13,15 +18,31 @@ export default async function Page({ params }: { params: { id: string } }) {
   );
   const task = await res.json();
   console.log(task);
+  dayjs.extend(weekday);
+  dayjs.extend(localeData);
+  dayjs.locale("ka");
+  const formatDate = (dateString: string) => {
+    const date = dayjs(dateString);
+    const dayOfWeek = date.format("ddd"); // ორშ, სამ, ოთხ...
+    const formattedDate = date.format("DD/M/YYYY"); // 12/6/2025
+
+    return `${dayOfWeek} - ${formattedDate}`;
+  };
 
   return (
     <div className="w-[1920px] h-[1550px] relative bg-white overflow-hidden">
-      <div className="left-[121px] top-[140px] absolute inline-flex flex-col justify-start items-start gap-6">
+      <div className="left-[121px] top-[120px] absolute inline-flex flex-col justify-start items-start gap-6">
         <div className="py-2.5 flex flex-col justify-start items-start gap-3">
           <div className="inline-flex justify-start items-center gap-4">
             <div
               data-property-1="Medium"
-              className="px-[5px] py-1 bg-white rounded-[3px] outline-[0.50px] outline-offset-[-0.50px] outline-yellow-400 flex justify-start items-center gap-1"
+              className={`px-[5px] py-1 bg-white rounded-[3px] outline-[0.50px] outline-offset-[-0.50px]  flex justify-start items-center gap-1 ${
+                task.priority.id === 1
+                  ? "outline-green-700"
+                  : task.priority.id === 2
+                  ? "outline-yellow-400"
+                  : "outline-red-500"
+              }`}
             >
               <div className="w-4 h-5 relative overflow-hidden">
                 <img
@@ -30,7 +51,15 @@ export default async function Page({ params }: { params: { id: string } }) {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="justify-start text-yellow-400 text-base font-medium font-['FiraGO'] leading-normal">
+              <div
+                className={`justify-start ${
+                  task.priority.id === 1
+                    ? "text-green-700"
+                    : task.priority.id === 2
+                    ? "text-yellow-400"
+                    : "text-red-500"
+                } text-base font-medium font-['FiraGO'] leading-normal`}
+              >
                 {task.priority.name}
               </div>
             </div>
@@ -60,87 +89,71 @@ export default async function Page({ params }: { params: { id: string } }) {
             დავალების დეტალები
           </div>
         </div>
-        <div className="flex flex-col justify-start items-start">
-          <div className="h-16 py-2.5 inline-flex justify-start items-center gap-16">
-            <div className="w-40 flex justify-start items-center gap-1.5">
-              <div className="w-6 h-6 relative overflow-hidden">
-                <div className="w-4 h-4 bg-green-400 rounded-full" />
-              </div>
-              <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
-                {task.status.name}
+        <div className="h-16 py-2.5 inline-flex justify-start items-center gap-16">
+          <div className="w-40 flex justify-start items-center gap-1.5">
+            <div className="w-6 h-6 relative overflow-hidden">
+              <div className="w-5 h-5 left-[2px] top-[2.83px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              <div className="w-2.5 h-2.5 left-[12px] top-[2px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
+            </div>
+            <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
+              სტატუსი
+            </div>
+          </div>
+          <div className="h-20 inline-flex flex-col justify-start items-start">
+            <div className="p-3.5 bg-white rounded-[5px]  outline-1 outline-gray-300 inline-flex justify-start items-center gap-2.5">
+              <div>{task.status.name}</div>
+              <div className="inline-flex flex-col justify-start items-start">
+                ⌄
               </div>
             </div>
-            <div
-              data-property-1="Status"
-              className="h-20 inline-flex flex-col justify-start items-start"
-            >
-              <div className="p-3.5 bg-white rounded-[5px] outline-1 outline-gray-300 inline-flex justify-start items-center gap-2.5">
-                <div></div>
-                <div className="inline-flex flex-col justify-start items-start">
-                  <div className="relative">
-                    <div className="relative">
-                      <div className="outline-[1.50px] outline-offset-[-0.75px] outline-neutral-700" />
-                      <div className="origin-top-left rotate-[3.14deg] opacity-0" />
-                    </div>
-                  </div>
+          </div>
+        </div>
+        <div className="self-stretch h-16 py-3 inline-flex justify-start items-center gap-16">
+          <div className="w-40 flex justify-start items-center gap-1.5">
+            <div className="w-6 h-6 flex justify-start items-center gap-2.5">
+              <div className="w-5 h-5 px-1 py-[3px] inline-flex flex-col justify-start items-center gap-1 overflow-hidden">
+                <div className="w-2 h-2  outline-2 outline-offset-[-1px] outline-zinc-700" />
+                <div className="w-4 h-1.5  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              </div>
+            </div>
+            <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
+              თანამშრომელი
+            </div>
+          </div>
+          <div className="w-44 inline-flex flex-col justify-start items-end">
+            <div className="inline-flex justify-end items-center gap-2.5">
+              <div className="text-right  justify-start text-zinc-700 text-xs font-light font-sans">
+                {task.department.name}
+              </div>
+            </div>
+            <div className="inline-flex justify-center items-center gap-3">
+              <img
+                className="w-8 h-8 rounded-full"
+                src={task.employee.avatar}
+              />
+              <div className="flex justify-center items-center gap-2.5">
+                <div className="w-32 justify-start text-neutral-950 text-sm font-normal font-['FiraGO'] leading-tight">
+                  {task.employee.name + " " + task.employee.surname}
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="self-stretch h-16 py-3 inline-flex justify-start items-center gap-16">
-            <div className="w-40 flex justify-start items-center gap-1.5">
-              <div className="w-6 h-6 flex justify-start items-center gap-2.5">
-                <div className="w-5 h-5 px-1 py-[3px] inline-flex flex-col justify-start items-center gap-1 overflow-hidden">
-                  <div className="w-2 h-2 outline-2 outline-offset-[-1px] outline-zinc-700" />
-                  <div className="w-4 h-1.5 outline-2 outline-offset-[-1px] outline-zinc-700" />
-                </div>
-              </div>
-              <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
-                {task.employee.name} {task.employee.surname}
-              </div>
+        </div>
+        <div className="self-stretch h-16 py-2 inline-flex justify-start items-center gap-16">
+          <div className="flex justify-start items-center gap-1.5">
+            <div className="w-6 h-6 relative overflow-hidden">
+              <div className="w-4 h-4 left-[3px] top-[4px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              <div className="w-0 h-1 left-[16px] top-[2px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              <div className="w-0 h-1 left-[8px] top-[2px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              <div className="w-4 h-0 left-[3px] top-[10px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
             </div>
-            <div className="w-44 inline-flex flex-col justify-start items-end">
-              <div className="inline-flex justify-end items-center gap-2.5">
-                <div className="text-right justify-start text-zinc-700 text-xs font-light font-['FiraGO']">
-                  დიზაინის დეპარტამენტი
-                </div>
-              </div>
-              <div className="inline-flex justify-center items-center gap-3">
-                <img
-                  className="w-8 h-8 rounded-full"
-                  src={task.employee.avatar}
-                  alt={task.employee.name}
-                />
-                <div className="flex justify-center items-center gap-2.5">
-                  <div className="w-32 justify-start text-neutral-950 text-sm font-normal font-['FiraGO'] leading-tight">
-                    {task.employee.department.name}
-                  </div>
-                </div>
-              </div>
+            <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
+              დავალების ვადა
             </div>
           </div>
-
-          <div className="self-stretch h-16 py-2 inline-flex justify-start items-center gap-16">
-            <div className="flex justify-start items-center gap-1.5">
-              <div className="w-6 h-6 relative overflow-hidden">
-                <div className="w-4 h-4 left-[3px] top-[4px] absolute outline-2 outline-offset-[-1px] outline-zinc-700" />
-                <div className="w-0 h-1 left-[16px] top-[2px] absolute outline-2 outline-offset-[-1px] outline-zinc-700" />
-                <div className="w-0 h-1 left-[8px] top-[2px] absolute outline-2 outline-offset-[-1px] outline-zinc-700" />
-                <div className="w-4 h-0 left-[3px] top-[10px] absolute outline-2 outline-offset-[-1px] outline-zinc-700" />
-              </div>
-              <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
-                დავალების ვადა
-              </div>
-            </div>
-            <div className="w-28 flex justify-center items-center gap-2.5">
-              <div className="justify-start text-neutral-950 text-sm font-normal font-['FiraGO'] leading-tight">
-                {new Date(task.due_date).toLocaleDateString("ka-GE", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                })}
-              </div>
+          <div className="w-28 flex justify-center items-center gap-2.5">
+            <div className="justify-start text-neutral-950 text-sm font-normal font-['FiraGO'] leading-tight">
+              {formatDate(task.due_date)}
             </div>
           </div>
         </div>

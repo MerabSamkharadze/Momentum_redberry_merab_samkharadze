@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import AddEmploy from "./AddEmploy";
 
 export default function Header() {
   return (
@@ -20,16 +21,9 @@ export default function Header() {
         </div>
       </div>
       <div className="flex justify-start items-center gap-10">
-        <div
-          data-property-1="Default"
-          className="px-5 py-2.5 bg-white rounded-[5px] outline-offset-[-1px] outline-1 outline-[#8338ec] flex justify-center items-center gap-2.5"
-        >
-          <div className="justify-start  text-[#212529] text-base font-normal font-['FiraGO']">
-            თანამშრომლის შექმნა
-          </div>
-        </div>
+        <AddEmploy />
         <Link
-          href="/createNewTask"
+          href="/create-task"
           className="px-5 py-2.5 bg-[#8338ec] rounded-[5px] flex justify-center items-center gap-1"
         >
           <div className="w-5 h-5 relative">

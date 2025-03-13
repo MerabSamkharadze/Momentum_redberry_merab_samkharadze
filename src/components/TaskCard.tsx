@@ -85,13 +85,31 @@ export default function TaskCard({ task, column_name }: TaskCardProps) {
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1 px-2 py-1 border rounded-md">
+          <div
+            className={`flex items-center gap-1 px-2 py-1  rounded-md outline-[0.50px] outline-offset-[-0.50px] ${
+              task.priority.id === 1
+                ? "outline-green-700"
+                : task.priority.id === 2
+                ? "outline-yellow-400"
+                : "outline-red-500"
+            }`}
+          >
             <img
               src={task.priority.icon}
               alt={task.priority.name}
               className="w-4 h-4"
             />
-            <span className="text-xs text-gray-700">{task.priority.name}</span>
+            <span
+              className={`text-xs ${
+                task.priority.id === 1
+                  ? "text-green-700"
+                  : task.priority.id === 2
+                  ? "text-yellow-400"
+                  : "text-red-500"
+              }`}
+            >
+              {task.priority.name}
+            </span>
           </div>
 
           <div
