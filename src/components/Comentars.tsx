@@ -98,13 +98,13 @@ export default function Comentars({ id }: { id: string }) {
       setOpenReply((prev) => ({ ...prev, [parentId]: false }));
     } catch (err: any) {
       console.error(err);
-      alert(err.message);
+      alert("პასუხის დამატება ვერ მოხერხდა");
     }
   };
 
   return (
-    <div className="w-[741px] h-[975px] absolute left-[1059px] top-[199px] bg-purple-50/60 rounded-[10px] outline-[0.30px] outline-offset-[-0.30px] outline-violet-200">
-      <div className="w-[651px] px-5 pt-4 pb-3.5 absolute left-[45px] top-[40px] bg-white rounded-[10px] outline outline-gray-400 inline-flex flex-col gap-2.5">
+    <div className="w-[741px] h-[975px] absolute left-[1059px] top-[199px] bg-purple-50/60 rounded-[10px] outline-[0.30px] outline-offset-[-0.30px] overflow-scroll outline-violet-200">
+      <div className="w-[651px] px-5 pt-4 pb-3.5  ml-[45px] mt-[40px] bg-white rounded-[10px] outline outline-gray-400 inline-flex flex-col gap-2.5">
         <div className="py-2.5 inline-flex justify-center items-center gap-2.5 w-full">
           <textarea
             placeholder="დაწერე კომენტარი..."
@@ -120,7 +120,9 @@ export default function Comentars({ id }: { id: string }) {
             onClick={handleAddComment}
             disabled={!comment}
             className={`w-40 px-5 py-2 rounded-[20px] flex justify-center items-center gap-2.5 text-base font-normal font-['FiraGO'] ${
-              comment ? "bg-violet-600" : "bg-gray-400 cursor-not-allowed"
+              comment.trim()
+                ? "bg-violet-600"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
           >
             <span className="text-white">დააკომენტარე</span>
@@ -128,7 +130,7 @@ export default function Comentars({ id }: { id: string }) {
         </div>
       </div>
 
-      <div className="absolute left-[45px] top-[241px] inline-flex justify-start items-center gap-1.5">
+      <div className=" ml-[45px] mt-[14px] inline-flex justify-start items-center gap-1.5">
         <div className="text-black text-xl font-medium font-sans">
           კომენტარები
         </div>
@@ -139,7 +141,7 @@ export default function Comentars({ id }: { id: string }) {
         </div>
       </div>
 
-      <div className="absolute left-[45px] top-[280px] w-[651px]">
+      <div className=" ml-[45px] mt-7  w-[651px]">
         {loading ? (
           <div className="flex justify-center items-center h-full">
             <div className="w-10 h-10 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full animate-spin" />
@@ -169,8 +171,11 @@ export default function Comentars({ id }: { id: string }) {
                           [com.id]: !prev[com.id],
                         }))
                       }
-                      className="text-violet-600 hover:text-violet-400 text-xs font-normal font-['FiraGO'] cursor-pointer mt-1"
+                      className="flex gap-1 text-violet-600 hover:text-violet-400 text-xs font-normal font-['FiraGO'] cursor-pointer mt-1"
                     >
+                      <span>
+                        <img src="/Left.svg" alt="უპასუხე იკონი" />
+                      </span>
                       უპასუხე
                     </button>
                   )}
@@ -191,7 +196,9 @@ export default function Comentars({ id }: { id: string }) {
                       />
                       <button
                         onClick={() => handleReply(com.id)}
-                        disabled={!replyTexts[com.id]}
+                        disabled={
+                          !replyTexts[com.id] || !replyTexts[com.id].trim()
+                        }
                         className="mt-1 bg-violet-600 hover:bg-violet-400 text-white px-3 py-1 cursor-pointer rounded text-xs"
                       >
                         უპასუხე
