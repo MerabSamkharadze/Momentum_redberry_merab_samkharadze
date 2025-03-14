@@ -99,7 +99,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black "
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0F1026]"
       onClick={onClose}
     >
       <div
@@ -141,20 +141,19 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
                       <input
                         type="text"
                         className="flex-1 bg-transparent focus:outline-none"
-                        placeholder="მინიმუმ 2 სიმბოლო"
                         {...register("firstName", {
-                          required: "First name is required",
+                          required: "სავალდებულო",
                           minLength: {
                             value: 2,
-                            message: "Minimum 2 characters",
+                            message: "მინიმუმ 2 სიმბოლო",
                           },
                           maxLength: {
                             value: 255,
-                            message: "Maximum 255 characters",
+                            message: "მაქსიმუმ 255 სიმბოლო",
                           },
                           pattern: {
                             value: /^[A-Za-zა-ჰ]+$/,
-                            message: "Only Latin and Georgian letters",
+                            message: "მხოლოდ ქართული და ლათინური ასოები",
                           },
                         })}
                       />
@@ -183,20 +182,19 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
                       <input
                         type="text"
                         className="flex-1 bg-transparent focus:outline-none"
-                        placeholder="მინიმუმ 2 სიმბოლო"
                         {...register("lastName", {
-                          required: "Last name is required",
+                          required: "სავალდებულო",
                           minLength: {
                             value: 2,
-                            message: "Minimum 2 characters",
+                            message: "მინიმუმ 2 სიმბოლო",
                           },
                           maxLength: {
                             value: 255,
-                            message: "Maximum 255 characters",
+                            message: "მაქსიმუმ 255 სიმბოლო",
                           },
                           pattern: {
                             value: /^[A-Za-zა-ჰ]+$/,
-                            message: "Only Latin and Georgian letters",
+                            message: "მხოლოდ ქართული და ლათინური ასოები",
                           },
                         })}
                       />
@@ -232,7 +230,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
                         alt="Avatar Preview"
                         width={88}
                         height={88}
-                        className="absolute left-[363px] top-[16px] rounded-full object-cover"
+                        className="absolute left-[363px] top-[16px] rounded-full object-cover "
                       />
 
                       <button
@@ -274,7 +272,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
                     <select
                       className="w-full bg-transparent focus:outline-none"
                       {...register("department", {
-                        required: "Department is required",
+                        required: "სავალდებულო",
                       })}
                     >
                       <option value="">აირჩიეთ დეპარტამენტი</option>
