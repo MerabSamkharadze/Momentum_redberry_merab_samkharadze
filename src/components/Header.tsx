@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import AddEmploy from "./AddEmploy";
@@ -22,6 +24,7 @@ export default function Header() {
       </div>
       <div className="flex justify-start items-center gap-10">
         <AddEmploy />
+
         <Link
           href="/create-task"
           className="px-5 py-2.5 bg-[#8338ec] hover:bg-[#B588F4]  rounded-[5px] flex justify-center items-center gap-1"

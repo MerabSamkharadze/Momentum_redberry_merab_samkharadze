@@ -6,6 +6,7 @@ export async function GET() {
       "https://momentum.redberryinternship.ge/api/employees",
       {
         method: "GET",
+        cache: "no-cache",
         headers: {
           Authorization: `Bearer 9e686711-3c8a-4e08-8fbe-15612e25ab5b`,
         },

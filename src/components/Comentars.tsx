@@ -169,7 +169,7 @@ export default function Comentars({ id }: { id: string }) {
                           [com.id]: !prev[com.id],
                         }))
                       }
-                      className="text-violet-600 text-xs font-normal font-['FiraGO'] mt-1"
+                      className="text-violet-600 hover:text-violet-400 text-xs font-normal font-['FiraGO'] cursor-pointer mt-1"
                     >
                       უპასუხე
                     </button>
@@ -192,7 +192,7 @@ export default function Comentars({ id }: { id: string }) {
                       <button
                         onClick={() => handleReply(com.id)}
                         disabled={!replyTexts[com.id]}
-                        className="mt-1 bg-violet-600 text-white px-3 py-1 rounded text-xs"
+                        className="mt-1 bg-violet-600 hover:bg-violet-400 text-white px-3 py-1 cursor-pointer rounded text-xs"
                       >
                         უპასუხე
                       </button>
