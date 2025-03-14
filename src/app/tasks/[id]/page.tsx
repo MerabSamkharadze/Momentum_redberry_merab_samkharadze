@@ -17,7 +17,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     }
   );
   const task = await res.json();
-  // console.log(task);
+
   dayjs.extend(weekday);
   dayjs.extend(localeData);
   dayjs.locale("ka");
@@ -158,7 +158,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           </div>
         </div>
       </div>
-      <Comentars />
+      <Comentars id={params.id} />
     </div>
   );
 }
