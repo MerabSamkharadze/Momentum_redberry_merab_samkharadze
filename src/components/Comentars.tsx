@@ -194,7 +194,7 @@ export default function Comentars({ id }: { id: string }) {
                         disabled={!replyTexts[com.id]}
                         className="mt-1 bg-violet-600 text-white px-3 py-1 rounded text-xs"
                       >
-                        გაგზავნა
+                        უპასუხე
                       </button>
                     </div>
                   )}
