@@ -1,37 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Momentum - Progress Tracking Software
 
-## Getting Started
+Momentum is an **internal Progress Tracking application for Redberry**, allowing the company to manage employees and their assigned tasks efficiently.
 
-First, run the development server:
+## 📌 Features
 
+- **Tasks Page**  
+  - Filter tasks by department, employee name, and priority
+  
+- **Task Details Page**  
+  - View full task details
+  - Change task status
+  - Delete tasks
+
+- **Task Creation Page**  
+  - Create new tasks and assign them to employees
+
+- **Employee Creation Modal**  
+  - Add new employees
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to set up and run the project locally:
+
+### 1. Install Dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+### 2. Run the Development Server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Technologies Used
 
-## Learn More
+- **Next.js** - A full-stack framework for React
+- **TypeScript** - A strongly typed superset of JavaScript
+- **Tailwind CSS** - A utility-first CSS framework
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📚 Additional Resources
 
-## Deploy on Vercel
+For more information, check out the following resources:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Momentum_redberry
+
+---
+
+## 🚀 Deployment
+
+You can deploy Momentum on [Vercel](https://vercel.com):
+
+[Next.js Deployment Guide](https://nextjs.org/docs/deployment)
+
+---
+
+## 💡 Contribution
+
+If you would like to contribute, feel free to open an **Issue** or submit a **Pull Request** on GitHub.
+
+---
+
+## 📄 License
+
+MIT License. Feel free to use and modify Momentum!
+
