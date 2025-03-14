@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ka";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
+import StatusSelect from "@/components/StatusSelect";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -100,12 +101,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
             </div>
           </div>
           <div className="h-20 inline-flex flex-col justify-start items-start">
-            <div className="p-3.5 bg-white rounded-[5px]  outline-1 outline-gray-300 inline-flex justify-start items-center gap-2.5">
-              <div>{task.status.name}</div>
-              <div className="inline-flex flex-col justify-start items-start">
-                ⌄
-              </div>
-            </div>
+            <StatusSelect initialStatus={task.status} id={params.id} />
           </div>
         </div>
         <div className="self-stretch h-16 py-3 inline-flex justify-start items-center gap-16">
