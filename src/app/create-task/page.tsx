@@ -1,59 +1,8 @@
-// app/create-task/page.tsx
-
 import React from "react";
 
 export default function CreateTaskPage() {
   return (
     <div className="w-[1920px] h-[1550px] relative bg-white overflow-hidden">
-      {/* ჰედერი */}
-      {/* <div className="w-[1920px] px-28 py-7 left-0 top-0 absolute bg-white inline-flex justify-between items-center">
-        <div className="flex justify-start items-center gap-1">
-          <div className="justify-start text-violet-600 text-3xl font-normal font-['Fredoka_One']">
-            Momentum
-          </div>
-          <div className="w-9 h-9 relative overflow-hidden">
-            <div className="w-5 h-6 left-[9.50px] top-[6.46px] absolute bg-sky-300" />
-            <div className="w-4 h-5 left-[11.02px] top-[10.98px] absolute bg-amber-400" />
-            <div className="w-6 h-[3.44px] left-[7.98px] top-[4.54px] absolute bg-violet-600" />
-            <div className="w-6 h-[3.44px] left-[7.98px] top-[30.02px] absolute bg-violet-600" />
-            <div className="w-1 h-1 p-px left-[20.82px] top-[8.73px] absolute bg-white rounded-[20px] inline-flex justify-start items-center gap-2.5">
-              <div className="w-0.5 h-0.5 bg-orange-600" />
-            </div>
-            <div className="w-1 h-1 p-px left-[13.82px] top-[8.73px] absolute bg-white rounded-[20px] inline-flex justify-start items-center gap-2.5">
-              <div className="w-0.5 h-0.5 bg-orange-600" />
-            </div>
-            <div className="w-1 h-0.5 left-[17.41px] top-[13.80px] absolute bg-zinc-700" />
-            <div className="w-5 h-px left-[9.31px] top-[29.64px] absolute bg-zinc-700" />
-            <div className="w-5 h-px left-[9.31px] top-[7.40px] absolute bg-zinc-700" />
-          </div>
-        </div>
-
-        <div className="flex justify-start items-center gap-10">
-          <div
-            data-property-1="Default"
-            className="px-5 py-2.5 bg-white rounded-[5px]  outline-1 outline-offset-[-1px] outline-violet-600 flex justify-center items-center gap-2.5"
-          >
-            <div className="justify-start text-neutral-800 text-base font-normal font-['FiraGO']">
-              თანამშრომლის შექმნა
-            </div>
-          </div>
-          <div
-            data-property-1="Default"
-            className="px-5 py-2.5 bg-violet-600 rounded-[5px] flex justify-center items-center gap-1"
-          >
-            <div className="w-5 h-5 relative">
-              <div className="w-2.5 h-0 left-[5px] top-[10px] absolute  outline-[1.50px] outline-offset-[-0.75px] outline-white" />
-              <div className="w-0 h-2.5 left-[10px] top-[5px] absolute  outline-[1.50px] outline-offset-[-0.75px] outline-white" />
-              <div className="w-5 h-5 left-0 top-0 absolute opacity-0" />
-            </div>
-            <div className="justify-start text-white text-base font-normal font-['FiraGO']">
-              შექმენი ახალი დავალება
-            </div>
-          </div>
-        </div>
-      </div> */}
-
-      {/* გვერდის სათაური */}
       <div className="w-[1684px] left-[118px] top-[140px] absolute justify-start text-neutral-800 text-4xl font-semibold font-['FiraGO']">
         შექმენი ახალი დავალება
       </div>

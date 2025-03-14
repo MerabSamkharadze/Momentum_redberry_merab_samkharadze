@@ -17,14 +17,14 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     }
   );
   const task = await res.json();
-  console.log(task);
+  // console.log(task);
   dayjs.extend(weekday);
   dayjs.extend(localeData);
   dayjs.locale("ka");
   const formatDate = (dateString: string) => {
     const date = dayjs(dateString);
-    const dayOfWeek = date.format("ddd"); // ორშ, სამ, ოთხ...
-    const formattedDate = date.format("DD/M/YYYY"); // 12/6/2025
+    const dayOfWeek = date.format("ddd");
+    const formattedDate = date.format("DD/M/YYYY");
 
     return `${dayOfWeek} - ${formattedDate}`;
   };

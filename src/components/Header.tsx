@@ -24,7 +24,7 @@ export default function Header() {
         <AddEmploy />
         <Link
           href="/create-task"
-          className="px-5 py-2.5 bg-[#8338ec] rounded-[5px] flex justify-center items-center gap-1"
+          className="px-5 py-2.5 bg-[#8338ec] hover:bg-[#B588F4]  rounded-[5px] flex justify-center items-center gap-1"
         >
           <div className="w-5 h-5 relative">
             <div className="w-2.5 h-0 left-[5px] top-[10px] absolute  outline-[1.50px] outline-offset-[-0.75px] outline-white" />

@@ -31,7 +31,7 @@ export default function Sort() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/employees");
+        const response = await fetch("/api/employees");
         if (!response.ok) {
           throw new Error("Failed to fetch employees");
         }

@@ -35,14 +35,17 @@ export default function Checker({
       <div className="flex flex-col gap-5">
         {items.map((item) => (
           <div key={item.id}>
-            <label htmlFor={item.name} className="flex items-center gap-3.5">
+            <label
+              htmlFor={item.id.toString()}
+              className="flex items-center gap-3.5"
+            >
               <input
                 type="checkbox"
                 name={item.name}
-                id={item.name}
+                id={item.id.toString()}
                 checked={selected.includes(item.id)}
                 onChange={() => handleCheckboxChange(item.id)}
-                className="w-5 h-5 rounded-md border border-neutral-800"
+                className="w-5 h-5 rounded-md border border-neutral-800  "
               />
               <div className="flex gap-2 items-center">
                 {item.avatar && (

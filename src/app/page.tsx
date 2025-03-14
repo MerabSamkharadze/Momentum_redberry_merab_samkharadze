@@ -24,10 +24,9 @@ export default function Home() {
         if (department) queryParams.append("department", department);
         if (employee) queryParams.append("employee", employee);
 
-        const res = await fetch(
-          `http://localhost:3000/api/tasks?${queryParams.toString()}`,
-          { cache: "no-store" }
-        );
+        const res = await fetch(`/api/tasks?${queryParams.toString()}`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) {
           throw new Error("Failed to fetch tasks");
@@ -41,9 +40,8 @@ export default function Home() {
     }
 
     fetchTasks();
-  }, [priority, department, employee]); // Dependencies for re-fetching data
+  }, [priority, department, employee]);
 
-  // Group tasks by status
   const start_tasks = statuses.find((s) => s.id === 1)?.tasks || [];
   const progress_tasks = statuses.find((s) => s.id === 2)?.tasks || [];
   const doneForTest_tasks = statuses.find((s) => s.id === 3)?.tasks || [];
