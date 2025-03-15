@@ -10,11 +10,11 @@ const employees = ["გიორგი", "ანა", "მიხეილ"];
 const priorities = [
   {
     label: "მაღალი",
-    style: "text-violet-600 text-base font-normal font-['FiraGO']",
+    style: "text-neutral-600 text-sm font-normal font-['FiraGO']",
   },
   {
     label: "საშუალო",
-    style: "text-neutral-950 text-sm font-light font-['FiraGO']",
+    style: "text-neutral-600 text-sm font-normal font-['FiraGO']",
   },
 ];
 const statuses = [
@@ -39,7 +39,6 @@ const TaskForm = () => {
   const [openEmployee, setOpenEmployee] = useState(false);
   const [openPriority, setOpenPriority] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
-  const [openDeadline, setOpenDeadline] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -209,9 +208,9 @@ const TaskForm = () => {
               </label>
               <div className="w-2 h-2 -mt-5 relative ">*</div>
             </div>
-            <div className="relative">
+            <div className=" z-50">
               <div
-                className="p-3.5 bg-white rounded-[5px]  outline-1 outline-zinc-200 flex items-center justify-between cursor-pointer"
+                className="p-3.5 bg-white rounded-[5px]  outline-1 outline-zinc-200 flex items-center justify-between cursor-pointer "
                 onClick={() => setOpenDepartment(!openDepartment)}
               >
                 <span>{selectedDepartment || "დეპარტამენტი"}</span>
@@ -220,7 +219,7 @@ const TaskForm = () => {
                 </div>
               </div>
               {openDepartment && (
-                <div className="mt-2 w-full bg-white rounded border border-violet-600">
+                <div className="mt-2 w-full bg-white rounded border border-violet-600 ">
                   {departments.map((dep) => (
                     <div
                       key={dep}
@@ -239,14 +238,12 @@ const TaskForm = () => {
           </div>
 
           {/* პასუხისმგებელი თანამშრომელი */}
-          <div className="w-[550px] h-28 flex flex-col">
+          <div className="w-[550px] h-28 flex mt-7 flex-col z-20">
             <div className="py-1.5 flex justify-start items-center">
-              <label className="text-gray-400 text-base font-normal font-['FiraGO']">
+              <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
                 პასუხისმგებელი თანამშრომელი
               </label>
-              <div className="w-2 h-2 relative overflow-hidden">
-                <div className="w-1.5 h-1.5 absolute bg-zinc-200" />
-              </div>
+              <div className="w-2 h-2 -mt-5 relative ">*</div>
             </div>
             <div className="relative">
               <div
@@ -278,79 +275,18 @@ const TaskForm = () => {
           </div>
 
           {/* დედლაინი */}
-          <div className="w-80 flex flex-col gap-1">
-            <div className="flex flex-col">
+          <div className="w-80 flex flex-col mt-28 gap-1 ml-0.5">
+            <div className="flex flex-col ">
               <label className="w-20 py-1.5 flex justify-center items-center text-neutral-700 text-base font-normal font-['FiraGO']">
                 დედლაინი
               </label>
             </div>
-            <div
-              className="w-80 h-11 relative bg-white rounded-[5px]  outline-1 outline-violet-600 overflow-hidden cursor-pointer"
-              onClick={() => setOpenDeadline(!openDeadline)}
-            >
-              <div className="absolute left-[36px] top-[12.50px] text-gray-400 text-sm font-normal font-['FiraGO'] leading-tight">
-                {deadline || "DD/MM/YYYY"}
-              </div>
-              <div className="absolute left-[14px] top-[14.50px] w-4 h-4 overflow-hidden">
-                <div className="w-3.5 h-3.5 absolute bg-slate-600" />
-              </div>
-              <div className="absolute left-[35px] top-[12px] w-px h-5 bg-neutral-800" />
-            </div>
-            {openDeadline && (
-              <div className="w-80 p-4 bg-white shadow-lg flex flex-col gap-5">
-                {/* კალენდრის ჰედერი */}
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-1">
-                    <span className="text-black text-xs font-bold font-['FiraGO']">
-                      იანვარი 2025
-                    </span>
-                    <div className="w-2 h-1 bg-black" />
-                  </div>
-                  <div className="flex gap-2">
-                    {/* აქ შეგიძლიათ დაამატოთ ნავიგაციის ღილაკები */}
-                    <div className="w-5 h-5 bg-gray-200 rounded-full" />
-                    <div className="w-5 h-5 bg-gray-200 rounded-full" />
-                  </div>
-                </div>
-                {/* კალენდრის გრიდი */}
-                <div className="grid grid-cols-7 gap-1">
-                  {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                    <div
-                      key={day}
-                      className={`
-                        w-8 h-8 flex justify-center items-center rounded-sm cursor-pointer 
-                        ${
-                          day === 14
-                            ? "bg-violet-600 text-white font-bold"
-                            : "text-neutral-950 text-sm font-normal"
-                        }
-                      `}
-                      onClick={() => {
-                        setDeadline(`${day < 10 ? `0${day}` : day}/01/2025`);
-                        setOpenDeadline(false);
-                      }}
-                    >
-                      {day}
-                    </div>
-                  ))}
-                </div>
-                {/* კალენდრის ფუთერი */}
-                <div className="flex justify-between items-center px-4">
-                  <button
-                    type="button"
-                    className="text-violet-600 text-xs font-normal font-['FiraGO']"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className="text-violet-600 text-xs font-normal font-['FiraGO']"
-                  >
-                    OK
-                  </button>
-                </div>
-              </div>
-            )}
+            {/* real deadline */}
+            <input
+              type="date"
+              onChange={(e) => setDeadline(e.target.value)}
+              className="appearance-none border border-gray-400 p-2 rounded-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 w-80 flex flex-col gap-1 ml-0.5 uppercase justify-center "
+            />
           </div>
         </div>
 
