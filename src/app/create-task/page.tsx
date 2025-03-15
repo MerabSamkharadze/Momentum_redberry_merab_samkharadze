@@ -3,18 +3,8 @@
 import React, { useState, useEffect, Key } from "react";
 import { departments } from "../../components/Sort";
 import { statuses } from "@/components/StatusSelect";
+import { priorities } from "../../components/Sort";
 import Down from "../../../public/svg/Down";
-
-const priorities = [
-  {
-    label: "მაღალი",
-    style: "text-neutral-600 text-sm font-normal font-['FiraGO']",
-  },
-  {
-    label: "საშუალო",
-    style: "text-neutral-600 text-sm font-normal font-['FiraGO']",
-  },
-];
 
 const TaskForm = () => {
   // ველის მონაცემები
@@ -143,8 +133,7 @@ const TaskForm = () => {
                 {selectedPriority ? (
                   <span
                     className={
-                      priorities.find((p) => p.label === selectedPriority)
-                        ?.style
+                      " text-neutral-600 text-sm font-normal font-['FiraGO']"
                     }
                   >
                     {selectedPriority}
@@ -162,14 +151,20 @@ const TaskForm = () => {
                 <div className="mt-2 w-64 bg-white rounded border border-violet-600">
                   {priorities.map((p) => (
                     <div
-                      key={p.label}
+                      key={p.name}
                       className="p-3.5 cursor-pointer hover:bg-gray-100"
                       onClick={() => {
-                        setSelectedPriority(p.label);
+                        setSelectedPriority(p.name);
                         setOpenPriority(false);
                       }}
                     >
-                      <span className={p.style}>{p.label}</span>
+                      <span
+                        className={
+                          "text-neutral-600 text-sm font-normal font-['FiraGO']"
+                        }
+                      >
+                        {p.name}
+                      </span>
                     </div>
                   ))}
                 </div>
