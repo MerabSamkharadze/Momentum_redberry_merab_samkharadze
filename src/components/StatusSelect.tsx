@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Down from "../../public/svg/Down";
 
-const statuses = [
+export const statuses = [
   { id: 1, name: "დასაწყები" },
   { id: 2, name: "პროგრესში" },
   { id: 3, name: "მზად ტესტირებისთვის" },

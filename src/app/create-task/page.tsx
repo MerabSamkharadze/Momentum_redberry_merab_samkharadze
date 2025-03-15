@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useEffect, Key } from "react";
+import { departments } from "../../components/Sort";
+import { statuses } from "@/components/StatusSelect";
 import Down from "../../../public/svg/Down";
 
-// ნიმუშური მონაცემები
-const departments = ["IT", "HR", "Finance"];
-const employees = ["გიორგი", "ანა", "მიხეილ"];
 const priorities = [
   {
     label: "მაღალი",
@@ -17,19 +15,16 @@ const priorities = [
     style: "text-neutral-600 text-sm font-normal font-['FiraGO']",
   },
 ];
-const statuses = [
-  "დასაწყები",
-  "პროგრესში",
-  "მზად ტესტირებისთვის",
-  "დასრულებული",
-];
 
 const TaskForm = () => {
   // ველის მონაცემები
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState<{
+    avatar?: string;
+    name?: string;
+  }>({});
   const [selectedPriority, setSelectedPriority] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [deadline, setDeadline] = useState("");
@@ -39,6 +34,30 @@ const TaskForm = () => {
   const [openEmployee, setOpenEmployee] = useState(false);
   const [openPriority, setOpenPriority] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
+  const [employees, setEmployees] = useState<
+    {
+      avatar: string;
+      id: Key | null | undefined;
+      name: string;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch("/api/employees");
+        if (!response.ok) {
+          throw new Error("Failed to fetch employees");
+        }
+        const data = await response.json();
+        setEmployees(data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -180,15 +199,15 @@ const TaskForm = () => {
                 <div className="mt-2 w-64 rounded border border-violet-600">
                   {statuses.map((status) => (
                     <div
-                      key={status}
+                      key={status.id}
                       className="p-3.5 cursor-pointer hover:bg-gray-100"
                       onClick={() => {
-                        setSelectedStatus(status);
+                        setSelectedStatus(status.name);
                         setOpenStatus(false);
                       }}
                     >
                       <span className="text-neutral-950 text-sm font-light font-['FiraGO']">
-                        {status}
+                        {status.name}
                       </span>
                     </div>
                   ))}
@@ -208,7 +227,7 @@ const TaskForm = () => {
               </label>
               <div className="w-2 h-2 -mt-5 relative ">*</div>
             </div>
-            <div className=" z-50">
+            <div className=" z-40">
               <div
                 className="p-3.5 bg-white rounded-[5px]  outline-1 outline-zinc-200 flex items-center justify-between cursor-pointer "
                 onClick={() => setOpenDepartment(!openDepartment)}
@@ -222,14 +241,14 @@ const TaskForm = () => {
                 <div className="mt-2 w-full bg-white rounded border border-violet-600 ">
                   {departments.map((dep) => (
                     <div
-                      key={dep}
+                      key={dep.id}
                       className="p-3.5 cursor-pointer hover:bg-gray-100"
                       onClick={() => {
-                        setSelectedDepartment(dep);
+                        setSelectedDepartment(dep.name);
                         setOpenDepartment(false);
                       }}
                     >
-                      <span>{dep}</span>
+                      <span>{dep.name}</span>
                     </div>
                   ))}
                 </div>
@@ -250,7 +269,20 @@ const TaskForm = () => {
                 className="p-3.5 bg-white rounded-[5px]  outline-1 outline-zinc-200 flex items-center justify-between cursor-pointer"
                 onClick={() => setOpenEmployee(!openEmployee)}
               >
-                <span>{selectedEmployee || "თანამშრომელი"}</span>
+                <span>
+                  {selectedEmployee.avatar ? (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selectedEmployee.avatar}
+                        alt={selectedEmployee.name}
+                        className="w-6 h-6 rounded-full"
+                      />
+                      <span>{selectedEmployee.name}</span>
+                    </div>
+                  ) : (
+                    "თანამშრომელი"
+                  )}
+                </span>
                 <div className="w-3.5 h-3.5 relative">
                   <Down />
                 </div>
@@ -259,14 +291,19 @@ const TaskForm = () => {
                 <div className="mt-2 w-full bg-white rounded border border-violet-600">
                   {employees.map((emp) => (
                     <div
-                      key={emp}
-                      className="p-3.5 cursor-pointer hover:bg-gray-100"
                       onClick={() => {
                         setSelectedEmployee(emp);
                         setOpenEmployee(false);
                       }}
+                      key={emp.id}
+                      className="flex gap-2 items-center p-3.5 cursor-pointer hover:bg-gray-100"
                     >
-                      <span>{emp}</span>
+                      {emp.avatar && (
+                        <div className=" w-[50px] h-[50px] rounded-full overflow-hidden">
+                          <img src={emp.avatar} alt={emp.name} />
+                        </div>
+                      )}
+                      <span>{emp.name}</span>
                     </div>
                   ))}
                 </div>

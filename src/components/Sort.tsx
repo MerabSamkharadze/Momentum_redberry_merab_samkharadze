@@ -5,26 +5,23 @@ import Down from "../../public/svg/Down";
 import Checker from "./Checker";
 
 type ButtonGroup = "departments" | "priorities" | "employees";
-
+export const departments = [
+  { id: 1, name: "ადმინისტრაციის დეპარტამენტი" },
+  { id: 2, name: "ადამიანური რესურსების დეპარტამენტი" },
+  { id: 3, name: "ფინანსების დეპარტამენტი" },
+  { id: 4, name: "გაყიდვები და მარკეტინგის დეპარტამენტი" },
+  { id: 5, name: "ლოჯისტიკის დეპარტამენტი" },
+  { id: 6, name: "ტექნოლოგიების დეპარტამენტი" },
+  { id: 7, name: "მედიის დეპარტამენტი" },
+];
+export const priorities = [
+  { id: 1, name: "დაბალი" },
+  { id: 2, name: "საშუალო" },
+  { id: 3, name: "მაღალი" },
+];
 export default function Sort() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const departments = [
-    { id: 1, name: "ადმინისტრაციის დეპარტამენტი" },
-    { id: 2, name: "ადამიანური რესურსების დეპარტამენტი" },
-    { id: 3, name: "ფინანსების დეპარტამენტი" },
-    { id: 4, name: "გაყიდვები და მარკეტინგის დეპარტამენტი" },
-    { id: 5, name: "ლოჯისტიკის დეპარტამენტი" },
-    { id: 6, name: "ტექნოლოგიების დეპარტამენტი" },
-    { id: 7, name: "მედიის დეპარტამენტი" },
-  ];
-
-  const priorities = [
-    { id: 1, name: "დაბალი" },
-    { id: 2, name: "საშუალო" },
-    { id: 3, name: "მაღალი" },
-  ];
 
   const [employees, setEmployees] = useState([]);
 
