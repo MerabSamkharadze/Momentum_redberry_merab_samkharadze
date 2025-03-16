@@ -3,10 +3,13 @@
 import React, { useState, useEffect, Key } from "react";
 import { departments } from "../../components/Sort";
 import { statuses } from "@/components/StatusSelect";
-import { priorities } from "../../components/Sort";
+import { fetchPriorities } from "@/actions";
 import Down from "../../../public/svg/Down";
 import { useRouter } from "next/navigation";
 import EmployeeModal from "@/components/EmployeeModal";
+import { Priority } from "@/components/TaskCard";
+
+const priorities = await fetchPriorities();
 
 const TaskForm = () => {
   const router = useRouter();
@@ -24,7 +27,12 @@ const TaskForm = () => {
     name?: string;
     department?: { name: string; id: number };
   }>({ id: null, avatar: "", name: "", department: { name: "", id: 0 } });
-  const [selectedPriority, setSelectedPriority] = useState("საშულო");
+
+  const [selectedPriority, setSelectedPriority] = useState<{
+    icon: string;
+    id: number;
+    name: string;
+  }>(priorities[0]);
   const [selectedStatus, setSelectedStatus] = useState("დასაწყები");
   const [deadline, setDeadline] = useState(formattedTomorrow);
 
@@ -161,8 +169,7 @@ const TaskForm = () => {
             name: title,
             description,
             employee_id: selectedEmployee.id,
-            priority_id: priorities.find((p) => p.name === selectedPriority)
-              ?.id,
+            priority_id: selectedPriority.id,
             status_id: statuses.find((s) => s.name === selectedStatus)?.id,
             due_date: deadline,
           }),
@@ -255,7 +262,16 @@ const TaskForm = () => {
                 onClick={() => setOpenPriority(!openPriority)}
               >
                 <span className="text-neutral-600 text-sm font-normal font-['FiraGO']">
-                  {selectedPriority}
+                  {selectedPriority.icon && (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selectedPriority.icon}
+                        alt={selectedPriority.name}
+                        className="w-6 h-6 rounded-full"
+                      />
+                      <span>{selectedPriority.name}</span>
+                    </div>
+                  )}
                 </span>
                 <div className="w-3.5 h-3.5">
                   <Down />
@@ -263,15 +279,20 @@ const TaskForm = () => {
               </div>
               {openPriority && (
                 <div className="mt-2 w-64 bg-white rounded border border-violet-600">
-                  {priorities.map((p) => (
+                  {priorities.map((p: Priority) => (
                     <div
                       key={p.name}
-                      className="p-3.5 cursor-pointer hover:bg-gray-100"
+                      className="flex gap-2 items-center p-3.5 cursor-pointer hover:bg-gray-100"
                       onClick={() => {
-                        setSelectedPriority(p.name);
+                        setSelectedPriority(p);
                         setOpenPriority(false);
                       }}
                     >
+                      {p.icon && (
+                        <div className="w-4 h-4 relative overflow-hidden">
+                          <img src={p.icon} alt={p.name} />
+                        </div>
+                      )}
                       <span className="text-neutral-600 text-sm font-normal font-['FiraGO']">
                         {p.name}
                       </span>

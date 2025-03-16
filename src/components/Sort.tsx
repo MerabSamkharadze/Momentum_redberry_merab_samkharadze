@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Down from "../../public/svg/Down";
 import Checker from "./Checker";
+import { fetchPriorities } from "@/actions";
 
 type ButtonGroup = "departments" | "priorities" | "employees";
+export type Priority = { id: number; name: string; icon: string };
 export const departments = [
   { id: 1, name: "ადმინისტრაციის დეპარტამენტი" },
   { id: 2, name: "ადამიანური რესურსების დეპარტამენტი" },
@@ -14,11 +16,8 @@ export const departments = [
   { id: 6, name: "ტექნოლოგიების დეპარტამენტი" },
   { id: 7, name: "მედიის დეპარტამენტი" },
 ];
-export const priorities = [
-  { id: 1, name: "დაბალი" },
-  { id: 2, name: "საშუალო" },
-  { id: 3, name: "მაღალი" },
-];
+
+const priorities = await fetchPriorities();
 export default function Sort() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -233,8 +232,10 @@ export default function Sort() {
             </div>
             <div className="flex gap-2">
               {priorities
-                .filter((item) => selectedOptions.priorities.includes(item.id))
-                .map((item) => item.name)
+                .filter((item: Priority) =>
+                  selectedOptions.priorities.includes(item.id)
+                )
+                .map((item: { name: any }) => item.name)
                 .join(", ")}
               <button onClick={handleClear} className="hover:scale-110 rounded">
                 გასუფთავება
