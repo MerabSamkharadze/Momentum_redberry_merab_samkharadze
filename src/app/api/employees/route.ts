@@ -23,6 +23,7 @@ export async function GET() {
       id: emp.id,
       name: `${emp.name} ${emp.surname}`,
       avatar: emp.avatar,
+      department: emp.department,
     }));
 
     return NextResponse.json(formattedEmployees);

@@ -72,22 +72,24 @@ export default function Sort() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleButtonClick = (group: ButtonGroup) => {
-    setActiveButton(group);
-    if (group === "departments") {
-      setActiveGroup("departments");
-      setCurrentItems(departments);
-      setIsOpen(true);
-    } else if (group === "priorities") {
-      setActiveGroup("priorities");
-      setCurrentItems(priorities);
-      setIsOpen(true);
-    } else if (group === "employees") {
-      setActiveGroup("employee");
-      setCurrentItems(employees);
-      setIsOpen(true);
-    } else {
+    if (activeButton === group) {
+      // თუ უკვე აქტიურია, მაშინ ვხურავთ
+      setActiveButton(null);
       setActiveGroup(null);
       setIsOpen(false);
+    } else {
+      setActiveButton(group);
+      if (group === "departments") {
+        setActiveGroup("departments");
+        setCurrentItems(departments);
+      } else if (group === "priorities") {
+        setActiveGroup("priorities");
+        setCurrentItems(priorities);
+      } else if (group === "employees") {
+        setActiveGroup("employee");
+        setCurrentItems(employees);
+      }
+      setIsOpen(true);
     }
   };
 

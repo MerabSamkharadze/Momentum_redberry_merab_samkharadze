@@ -123,7 +123,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="self-stretch flex flex-col justify-start items-start gap-11"
+              className="self-stretch flex flex-col justify-start  gap-11"
             >
               <div className="self-stretch inline-flex justify-start items-center gap-11">
                 <div className="w-96 inline-flex flex-col justify-start items-start gap-[3px]">
@@ -292,7 +292,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              <div className="inline-flex justify-start items-center gap-5">
+              <div className="inline-flex justify-end items-center gap-5">
                 <button
                   type="button"
                   onClick={onClose}

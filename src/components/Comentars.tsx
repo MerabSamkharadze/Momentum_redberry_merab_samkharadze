@@ -183,6 +183,7 @@ export default function Comentars({ id }: { id: string }) {
                   {openReply[com.id] && (
                     <div className="mt-2">
                       <textarea
+                        autoFocus
                         placeholder="დაწერე პასუხი..."
                         value={replyTexts[com.id] || ""}
                         onChange={(e) =>
@@ -191,7 +192,7 @@ export default function Comentars({ id }: { id: string }) {
                             [com.id]: e.target.value,
                           }))
                         }
-                        className="w-full px-2 py-1 border rounded text-sm"
+                        className="w-full px-2 py-1 border rounded text-sm "
                         rows={2}
                       />
                       <button
