@@ -5,6 +5,7 @@ import { departments } from "../../components/Sort";
 import { statuses } from "@/components/StatusSelect";
 import { priorities } from "../../components/Sort";
 import Down from "../../../public/svg/Down";
+import { redirect } from "next/navigation";
 
 const TaskForm = () => {
   // ველის მონაცემები
@@ -12,9 +13,10 @@ const TaskForm = () => {
   const [description, setDescription] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState<{
+    id: any;
     avatar?: string;
     name?: string;
-  }>({});
+  }>({ id: null, avatar: "", name: "" });
   const [selectedPriority, setSelectedPriority] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [deadline, setDeadline] = useState("");
@@ -49,9 +51,9 @@ const TaskForm = () => {
     fetchEmployees();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // აქ შეგიძლიათ გააკეთოთ API რექვესთი, ჩათანოთ bearerAuth ტოკენი, და ა.შ.
+
     console.log({
       title,
       description,
@@ -61,6 +63,39 @@ const TaskForm = () => {
       selectedStatus,
       deadline,
     });
+
+    try {
+      const response = await fetch(
+        "https://momentum.redberryinternship.ge/api/tasks",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer 9e686711-3c8a-4e08-8fbe-15612e25ab5b`,
+          },
+          body: JSON.stringify({
+            name: title,
+            description,
+            employee_id: selectedEmployee.id,
+            priority_id: priorities.find((p) => p.name === selectedPriority)
+              ?.id,
+            status_id: statuses.find((s) => s.name === selectedStatus)?.id,
+            due_date: deadline,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error("Network response was not ok: " + errorText);
+      }
+
+      await response.json();
+    } catch (error) {
+      console.error("Error submitting the employee data:", error);
+    }
+    redirect("/");
   };
 
   return (
