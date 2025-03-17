@@ -3,7 +3,7 @@ import Home from "@/components/Home";
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>იტვირთება...</div>}>
+    <Suspense fallback={<div></div>}>
       <Home />
     </Suspense>
   );

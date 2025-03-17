@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Down from "../../public/svg/Down";
 import Checker from "./Checker";
+import { useEmployees } from "@/hooks/useEmployees";
 import { fetchPriorities } from "@/actions";
+import AddEmploy from "./AddEmploy";
 
 type ButtonGroup = "departments" | "priorities" | "employees";
 export type Priority = { id: number; name: string; icon: string };
@@ -12,34 +14,18 @@ export const departments = [
   { id: 2, name: "ადამიანური რესურსების დეპარტამენტი" },
   { id: 3, name: "ფინანსების დეპარტამენტი" },
   { id: 4, name: "გაყიდვები და მარკეტინგის დეპარტამენტი" },
-  { id: 5, name: "ლოჯისტიკის დეპარტამენტი" },
+  { id: 5, name: "ლოჯოსტიკის დეპარტამენტი" },
   { id: 6, name: "ტექნოლოგიების დეპარტამენტი" },
   { id: 7, name: "მედიის დეპარტამენტი" },
 ];
 
 const priorities = await fetchPriorities();
+
 export default function Sort() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [employees, setEmployees] = useState([]);
-
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await fetch("/api/employees");
-        if (!response.ok) {
-          throw new Error("Failed to fetch employees");
-        }
-        const data = await response.json();
-        setEmployees(data);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
-
-    fetchEmployees();
-  }, []);
+  const { employees, refetch: fetchEmployees } = useEmployees();
 
   const initialDepartments = searchParams.get("department")
     ? searchParams.get("department")!.split(",").map(Number)
@@ -72,7 +58,6 @@ export default function Sort() {
 
   const handleButtonClick = (group: ButtonGroup) => {
     if (activeButton === group) {
-      // თუ უკვე აქტიურია, მაშინ ვხურავთ
       setActiveButton(null);
       setActiveGroup(null);
       setIsOpen(false);
@@ -128,6 +113,7 @@ export default function Sort() {
 
   return (
     <div className="flex flex-col gap-10">
+      <AddEmploy fetchEmployees={fetchEmployees} />
       <div className="rounded-[10px] w-[700px] mt-14 outline outline-[#dee2e6] inline-flex gap-10">
         <div className="w-[199px] h-11 relative rounded-[5px]">
           <button

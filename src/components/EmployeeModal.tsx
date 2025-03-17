@@ -18,9 +18,14 @@ type Department = {
 type EmployeeModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  refetchEmployees: () => void;
 };
 
-const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
+const EmployeeModal: React.FC<EmployeeModalProps> = ({
+  isOpen,
+  onClose,
+  refetchEmployees,
+}) => {
   const {
     register,
     handleSubmit,
@@ -89,6 +94,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose }) => {
 
       reset();
       setAvatarPreview(null);
+      refetchEmployees();
       onClose();
     } catch (error) {
       console.error("Error submitting the employee data:", error);

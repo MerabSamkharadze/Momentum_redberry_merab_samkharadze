@@ -8,6 +8,8 @@ import Down from "../../../public/svg/Down";
 import { useRouter } from "next/navigation";
 import EmployeeModal from "@/components/EmployeeModal";
 import { Priority } from "@/components/TaskCard";
+import { useEmployees } from "@/hooks/useEmployees";
+import AddEmploy from "@/components/AddEmploy";
 
 const priorities = await fetchPriorities();
 
@@ -41,15 +43,6 @@ const TaskForm = () => {
   const [openPriority, setOpenPriority] = useState(false);
   const [openStatus, setOpenStatus] = useState(false);
 
-  const [employees, setEmployees] = useState<
-    {
-      avatar: string;
-      id: Key | null | undefined;
-      name: string;
-      department: { name: string; id: number };
-    }[]
-  >([]);
-
   const [errors, setErrors] = useState({
     title: "",
     description: "",
@@ -58,22 +51,7 @@ const TaskForm = () => {
     deadline: "",
   });
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await fetch("/api/employees");
-        if (!response.ok) {
-          throw new Error("Failed to fetch employees");
-        }
-        const data = await response.json();
-        setEmployees(data);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
-
-    fetchEmployees();
-  }, []);
+  const { employees, refetch: fetchEmployees } = useEmployees();
 
   const validateFields = () => {
     let tempErrors = {
@@ -415,7 +393,7 @@ const TaskForm = () => {
                     onClick={() => {
                       setIsOpen(true);
                     }}
-                    className="self-stretch w-full cursor-pointer mt-0.5 ml-1  h-12 px-3 py-3 bg-white hover:bg-gray-100 inline-flex justify-start items-center gap-1.5"
+                    className="self-stretch w-full p-6 overflow-hidden cursor-pointer  h-12 px-3 py-3 bg-white hover:bg-gray-100 inline-flex justify-start items-center gap-1.5"
                   >
                     <div className="flex  justify-start items-center gap-2">
                       <div className="w-4 h-4 p-2.5  rounded-[30px]  outline-[1.50px] outline-offset-[-1.50px] outline-violet-600 inline-flex flex-col justify-center items-center gap-2.5">
@@ -507,11 +485,13 @@ const TaskForm = () => {
         </div>
       </form>
       <EmployeeModal
+        refetchEmployees={fetchEmployees}
         isOpen={isOpen}
         onClose={function (): void {
           setIsOpen(false);
         }}
       />
+      <AddEmploy fetchEmployees={fetchEmployees} />
     </div>
   );
 };
