@@ -12,3 +12,32 @@ export const fetchPriorities = async () => {
     console.error("Error fetching employees:", error);
   }
 };
+
+export const fetchStatuses = async () => {
+  try {
+    const response = await fetch(
+      "https://momentum.redberryinternship.ge/api/statuses"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch employees");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+  }
+};
+export const fetchDepartments = async () => {
+  try {
+    const response = await fetch(
+      "https://momentum.redberryinternship.ge/api/departments"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch employees");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+  }
+};

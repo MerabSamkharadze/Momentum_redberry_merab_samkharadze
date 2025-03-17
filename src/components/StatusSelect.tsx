@@ -2,13 +2,9 @@
 
 import React, { useState } from "react";
 import Down from "../../public/svg/Down";
+import { fetchStatuses } from "@/actions";
 
-export const statuses = [
-  { id: 1, name: "დასაწყები" },
-  { id: 2, name: "პროგრესში" },
-  { id: 3, name: "მზად ტესტირებისთვის" },
-  { id: 4, name: "დასრულებული" },
-];
+export const statuses = await fetchStatuses();
 
 type Status = {
   id: number;
@@ -70,7 +66,7 @@ export default function StatusSelect({ initialStatus, id }: StatusSelectProps) {
 
       {isOpen && (
         <div className="absolute w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg z-10">
-          {statuses.map((status) => (
+          {statuses.map((status: Status) => (
             <div
               key={status.id}
               onClick={() => handleChange(status)}

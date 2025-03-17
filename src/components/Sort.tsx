@@ -5,19 +5,13 @@ import Down from "../../public/svg/Down";
 import Checker from "./Checker";
 import { useEmployees } from "@/hooks/useEmployees";
 import { fetchPriorities } from "@/actions";
+import { fetchDepartments } from "@/actions";
+import { Department } from "./TaskCard";
 import AddEmploy from "./AddEmploy";
 
 type ButtonGroup = "departments" | "priorities" | "employees";
 export type Priority = { id: number; name: string; icon: string };
-export const departments = [
-  { id: 1, name: "ადმინისტრაციის დეპარტამენტი" },
-  { id: 2, name: "ადამიანური რესურსების დეპარტამენტი" },
-  { id: 3, name: "ფინანსების დეპარტამენტი" },
-  { id: 4, name: "გაყიდვები და მარკეტინგის დეპარტამენტი" },
-  { id: 5, name: "ლოჯოსტიკის დეპარტამენტი" },
-  { id: 6, name: "ტექნოლოგიების დეპარტამენტი" },
-  { id: 7, name: "მედიის დეპარტამენტი" },
-];
+export const departments = await fetchDepartments();
 
 const priorities = await fetchPriorities();
 
@@ -212,8 +206,10 @@ export default function Sort() {
           <div className="flex gap-2 p-4 bg-gray-100 rounded">
             <div>
               {departments
-                .filter((dept) => selectedOptions.departments.includes(dept.id))
-                .map((dept) => dept.name)
+                .filter((dept: Department) =>
+                  selectedOptions.departments.includes(dept.id)
+                )
+                .map((dept: Department) => dept.name)
                 .join(", ")}
             </div>
             <div className="flex gap-2">

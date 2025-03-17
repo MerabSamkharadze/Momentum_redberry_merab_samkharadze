@@ -2,16 +2,18 @@
 
 import React, { useState, useEffect, Key } from "react";
 import { departments } from "../../components/Sort";
-import { statuses } from "@/components/StatusSelect";
 import { fetchPriorities } from "@/actions";
+import { fetchStatuses } from "@/actions";
 import Down from "../../../public/svg/Down";
 import { useRouter } from "next/navigation";
 import EmployeeModal from "@/components/EmployeeModal";
-import { Priority } from "@/components/TaskCard";
+import { Department, Priority } from "@/components/TaskCard";
+import { Status } from "@/components/TaskCard";
 import { useEmployees } from "@/hooks/useEmployees";
 import AddEmploy from "@/components/AddEmploy";
 
 const priorities = await fetchPriorities();
+const statuses = await fetchStatuses();
 
 const TaskForm = () => {
   const router = useRouter();
@@ -148,7 +150,8 @@ const TaskForm = () => {
             description,
             employee_id: selectedEmployee.id,
             priority_id: selectedPriority.id,
-            status_id: statuses.find((s) => s.name === selectedStatus)?.id,
+            status_id: statuses.find((s: Status) => s.name === selectedStatus)
+              ?.id,
             due_date: deadline,
           }),
         }
@@ -300,7 +303,7 @@ const TaskForm = () => {
               </div>
               {openStatus && (
                 <div className="mt-2 w-64 rounded border border-violet-600">
-                  {statuses.map((status) => (
+                  {statuses.map((status: Status) => (
                     <div
                       key={status.id}
                       className="p-3.5 cursor-pointer hover:bg-gray-100"
@@ -340,7 +343,7 @@ const TaskForm = () => {
               </div>
               {openDepartment && (
                 <div className="mt-2 w-full bg-white rounded border border-violet-600">
-                  {departments.map((dep) => (
+                  {departments.map((dep: Department) => (
                     <div
                       key={dep.id}
                       className="p-3.5 cursor-pointer hover:bg-gray-100"
