@@ -197,14 +197,14 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                   </span>
                   <span>*</span>
                 </div>
-                <div className="h-10 p-2.5 bg-white rounded-md border focus-within:border-violet-600">
+                <div className="self-stretch h-10 p-2.5 bg-white rounded-md outline  outline-offset-[-1px] outline-gray-300 inline-flex justify-between items-center">
                   <input
                     type="text"
                     className="w-full bg-transparent focus:outline-none"
                     {...register("firstName")}
                   />
                 </div>
-                {/* რეალურ დროში მოთხოვნების ჩვენება */}
+
                 <div className="flex flex-col gap-1 mt-1">
                   <span
                     className={`text-xs flex ${
@@ -254,7 +254,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                   </span>
                   <span>*</span>
                 </div>
-                <div className="h-10 p-2.5 bg-white rounded-md border focus-within:border-violet-600">
+                <div className="self-stretch h-10 p-2.5 bg-white rounded-md outline  outline-offset-[-1px] outline-gray-300 inline-flex justify-between items-center">
                   <input
                     type="text"
                     className="w-full bg-transparent focus:outline-none"
@@ -311,7 +311,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                 </span>
                 <span>*</span>
               </div>
-              <div className="h-28 relative bg-white rounded-lg border overflow-hidden">
+              <div className="self-stretch h-28 relative bg-white rounded-lg outline-1 outline-offset-[-1px]  outline-dashed  outline-gray-300  overflow-hidden">
                 {avatarPreview ? (
                   <>
                     <Image
