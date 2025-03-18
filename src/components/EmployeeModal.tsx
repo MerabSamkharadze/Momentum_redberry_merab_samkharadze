@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import Down from "../../public/svg/Down";
 
 const employeeFormSchema = z.object({
   firstName: z
@@ -30,7 +31,7 @@ const employeeFormSchema = z.object({
         files instanceof FileList && files[0].type.startsWith("image/"),
       { message: "ფაილი უნდა იყოს სურათი" }
     ),
-  department: z.string().nonempty({ message: "დეპარტამენტი სავალდებულოა" }),
+  department: z.string().nonempty("დეპარტამენტი სავალდებულოა"),
 });
 
 export type EmployeeForm = z.infer<typeof employeeFormSchema>;
@@ -87,6 +88,10 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
   const isLastNameMinValid = lastNameValue.length >= 2;
   const isLastNameMaxValid = lastNameValue.length <= 255;
   const isLastNamePatternValid = /^[A-Za-zა-ჰ]+$/.test(lastNameValue);
+  // --- დროპდაუნების სამართავი სტეიტები ---
+  const [openDepartment, setOpenDepartment] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
 
   useEffect(() => {
     fetch("https://momentum.redberryinternship.ge/api/departments")
@@ -116,7 +121,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
     const formData = new FormData();
     formData.append("name", data.firstName);
     formData.append("surname", data.lastName);
-    formData.append("department_id", data.department);
+    formData.append("department_id", selectedDepartmentId);
 
     if (data.avatar && data.avatar[0]) {
       formData.append("avatar", data.avatar[0]);
@@ -160,11 +165,11 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0D0F1026]"
+      className="fixed inset-0 z-50 flex pt-[125px] justify-center bg-[#0D0F1026]"
       onClick={handleClose}
     >
       <div
-        className="px-12 pt-10 pb-14 bg-white rounded-[10px] inline-flex flex-col justify-start items-end gap-9 relative"
+        className="px-12 pt-10 pb-14n h-[777px] bg-white rounded-[10px] inline-flex flex-col justify-start items-end gap-9 relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -348,32 +353,51 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
               )}
             </div>
 
-            {/* დეპარტამენტი */}
-            <div className="w-96 flex flex-col gap-[3px]">
-              <div className="flex items-center gap-1">
-                <span className="text-neutral-700 text-sm font-medium">
+            {/* --- დეპარტამენტი --- */}
+            <div className="h-28 w-96 flex flex-col">
+              <div className="py-1.5 flex items-center">
+                <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
                   დეპარტამენტი
-                </span>
-                <span>*</span>
+                </label>
+                <span className="ml-1">*</span>
               </div>
-              <div className="h-10 p-2.5 bg-white rounded-md border focus-within:border-violet-600">
-                <select
-                  className="w-full bg-transparent focus:outline-none"
-                  {...register("department")}
+              <div className="z-40">
+                <div
+                  className="p-3.5 bg-white rounded-[5px] outline-1 outline-zinc-200 flex items-center justify-between cursor-pointer"
+                  onClick={() => setOpenDepartment(!openDepartment)}
                 >
-                  <option value="">აირჩიეთ დეპარტამენტი</option>
-                  {departments.map((dept) => (
-                    <option key={dept.id} value={dept.id}>
-                      {dept.name}
-                    </option>
-                  ))}
-                </select>
+                  <span>{selectedDepartment || ""}</span>
+                  <span
+                    className={`transform transition-transform ${
+                      openDepartment ? "rotate-180" : "rotate-0"
+                    }`}
+                  >
+                    <div className="w-3.5 h-3.5">
+                      <Down />
+                    </div>
+                  </span>
+                </div>
+                {openDepartment && (
+                  <div className="mt-2 w-full bg-white rounded border border-violet-600">
+                    {departments.map((dep) => (
+                      <div
+                        key={dep.id}
+                        className="p-3.5 cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          setSelectedDepartment(dep.name);
+                          setSelectedDepartmentId(dep.id);
+                          setValue("department", dep.name, {
+                            shouldValidate: true,
+                          });
+                          setOpenDepartment(false);
+                        }}
+                      >
+                        <span>{dep.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              {errors.department && (
-                <span className="text-xs text-[#FA4D4D]">
-                  {errors.department.message}
-                </span>
-              )}
             </div>
 
             {/* ღილაკები */}
