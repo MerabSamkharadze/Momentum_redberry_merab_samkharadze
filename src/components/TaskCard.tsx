@@ -134,7 +134,9 @@ export default function TaskCard({ task, column_name }: TaskCardProps) {
           className="w-8 h-8 rounded-full "
         />
         <div className="flex items-center gap-1 text-gray-700 text-sm">
-          <span>💬</span>
+          <span>
+            <img src="/Comments.svg" alt="comments-icon" />
+          </span>
           <span>{task.total_comments}</span>
         </div>
       </div>

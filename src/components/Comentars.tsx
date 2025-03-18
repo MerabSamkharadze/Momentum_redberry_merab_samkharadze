@@ -144,7 +144,7 @@ export default function Comentars({ id }: { id: string }) {
       <div className=" ml-[45px] mt-7  w-[651px]">
         {loading ? (
           <div className="flex justify-center items-center h-full">
-            <div className="w-10 h-10 border-4 border-t-4 border-t-blue-500 border-gray-200 rounded-full animate-spin" />
+            <div className="w-10 h-10 border-4 border-t-4 border-t-violet-600 border-gray-200 rounded-full animate-spin" />
           </div>
         ) : error ? (
           <div className="text-red-500">Error: {error}</div>
