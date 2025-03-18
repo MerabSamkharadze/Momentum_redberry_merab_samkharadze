@@ -254,9 +254,15 @@ const TaskForm = () => {
                     </div>
                   )}
                 </span>
-                <div className="w-3.5 h-3.5">
-                  <Down />
-                </div>
+                <span
+                  className={`transform transition-transform ${
+                    openPriority ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <div className="w-3.5 h-3.5">
+                    <Down />
+                  </div>
+                </span>
               </div>
               {openPriority && (
                 <div className="mt-2 w-64 bg-white rounded border border-violet-600">
@@ -297,9 +303,15 @@ const TaskForm = () => {
                 <span className="flex-1 text-neutral-950 text-sm font-light font-['FiraGO']">
                   {selectedStatus}
                 </span>
-                <div className="w-3.5 h-3.5">
-                  <Down />
-                </div>
+                <span
+                  className={`transform transition-transform ${
+                    openStatus ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <div className="w-3.5 h-3.5">
+                    <Down />
+                  </div>
+                </span>
               </div>
               {openStatus && (
                 <div className="mt-2 w-64 rounded border border-violet-600">
@@ -337,9 +349,15 @@ const TaskForm = () => {
                 onClick={() => setOpenDepartment(!openDepartment)}
               >
                 <span>{selectedDepartment || "დეპარტამენტი"}</span>
-                <div className="w-3.5 h-3.5">
-                  <Down />
-                </div>
+                <span
+                  className={`transform transition-transform ${
+                    openDepartment ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <div className="w-3.5 h-3.5">
+                    <Down />
+                  </div>
+                </span>
               </div>
               {openDepartment && (
                 <div className="mt-2 w-full bg-white rounded border border-violet-600">
@@ -386,9 +404,15 @@ const TaskForm = () => {
                     "თანამშრომელი"
                   )}
                 </span>
-                <div className="w-3.5 h-3.5">
-                  <Down />
-                </div>
+                <span
+                  className={`transform transition-transform ${
+                    openEmployee ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <div className="w-3.5 h-3.5">
+                    <Down />
+                  </div>
+                </span>
               </div>
               {openEmployee && (
                 <div className="mt-2 w-full bg-white rounded border border-violet-600">
