@@ -122,7 +122,7 @@ export default function Comentars({ id }: { id: string }) {
             className={`w-40 px-5 py-2 rounded-[20px] flex justify-center items-center gap-2.5 text-base font-normal font-['FiraGO'] ${
               comment.trim()
                 ? "bg-violet-600"
-                : "bg-gray-400 cursor-not-allowed"
+                : " bg-violet-500 cursor-not-allowed"
             }`}
           >
             <span className="text-white">დააკომენტარე</span>
@@ -149,7 +149,7 @@ export default function Comentars({ id }: { id: string }) {
         ) : error ? (
           <div className="text-red-500">Error: {error}</div>
         ) : comments.length === 0 ? (
-          <div>No comments available.</div>
+          <div>კომენტარები არ არის</div>
         ) : (
           comments.map((com) => (
             <div key={com.id} className="mb-4">

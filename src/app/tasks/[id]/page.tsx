@@ -93,8 +93,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <div className="h-16 py-2.5 inline-flex justify-start items-center gap-16">
           <div className="w-40 flex justify-start items-center gap-1.5">
             <div className="w-6 h-6 relative overflow-hidden">
-              <div className="w-5 h-5 left-[2px] top-[2.83px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
-              <div className="w-2.5 h-2.5 left-[12px] top-[2px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              <img src="/pie-chart.svg" alt="pie-chart" />
             </div>
             <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
               სტატუსი
@@ -107,9 +106,9 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <div className="self-stretch h-16 py-3 inline-flex justify-start items-center gap-16">
           <div className="w-40 flex justify-start items-center gap-1.5">
             <div className="w-6 h-6 flex justify-start items-center gap-2.5">
-              <div className="w-5 h-5 px-1 py-[3px] inline-flex flex-col justify-start items-center gap-1 overflow-hidden">
-                <div className="w-2 h-2  outline-2 outline-offset-[-1px] outline-zinc-700" />
-                <div className="w-4 h-1.5  outline-2 outline-offset-[-1px] outline-zinc-700" />
+              <div className="w-6 h-6 px-1 py-[3px] inline-flex flex-col justify-start items-center gap-1 overflow-hidden">
+                <img src="/headvector.svg" alt="user" />
+                <img src="/Vector.svg" alt="user" />
               </div>
             </div>
             <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
@@ -137,12 +136,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         </div>
         <div className="self-stretch h-16 py-2 inline-flex justify-start items-center gap-16">
           <div className="flex justify-start items-center gap-1.5">
-            <div className="w-6 h-6 relative overflow-hidden">
-              <div className="w-4 h-4 left-[3px] top-[4px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
-              <div className="w-0 h-1 left-[16px] top-[2px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
-              <div className="w-0 h-1 left-[8px] top-[2px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
-              <div className="w-4 h-0 left-[3px] top-[10px] absolute  outline-2 outline-offset-[-1px] outline-zinc-700" />
-            </div>
+            <img src="/calendar.svg" alt="calendar" />
+
             <div className="justify-start text-zinc-700 text-base font-normal font-['FiraGO'] leading-normal">
               დავალების ვადა
             </div>

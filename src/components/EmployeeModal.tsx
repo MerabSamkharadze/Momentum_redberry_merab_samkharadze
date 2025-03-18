@@ -314,7 +314,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                       alt="Avatar Preview"
                       width={88}
                       height={88}
-                      className="absolute left-[363px] top-[16px] rounded-full object-cover overflow-hidden"
+                      className="absolute left-[363px] h-[88px] top-[16px] rounded-full object-cover overflow-hidden"
                     />
                     <button
                       type="button"
