@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fira_Sans, Fredoka } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { EmployeeProvider } from "@/context/EmployeeContext";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -27,10 +28,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${firaSans.variable} ${fredoka.variable} antialiased`}>
-        <Header />
-        {children}
-      </body>
+      <EmployeeProvider>
+        <body
+          className={`${firaSans.variable} ${fredoka.variable} antialiased`}
+        >
+          <Header />
+          {children}
+        </body>
+      </EmployeeProvider>
     </html>
   );
 }

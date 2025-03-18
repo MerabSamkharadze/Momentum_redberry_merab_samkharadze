@@ -3,11 +3,10 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Down from "../../public/svg/Down";
 import Checker from "./Checker";
-import { useEmployees } from "@/hooks/useEmployees";
 import { fetchPriorities } from "@/actions";
 import { fetchDepartments } from "@/actions";
 import { Department } from "./TaskCard";
-import AddEmploy from "./AddEmploy";
+import { useEmployeeContext } from "@/context/EmployeeContext";
 
 type ButtonGroup = "departments" | "priorities" | "employees";
 export type Priority = { id: number; name: string; icon: string };
@@ -19,7 +18,7 @@ export default function Sort() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { employees, refetch: fetchEmployees } = useEmployees();
+  const { employees, loading, error, refetch } = useEmployeeContext();
 
   const initialDepartments = searchParams.get("department")
     ? searchParams.get("department")!.split(",").map(Number)
@@ -107,7 +106,6 @@ export default function Sort() {
 
   return (
     <div className="flex flex-col gap-10">
-      <AddEmploy fetchEmployees={fetchEmployees} />
       <div className="rounded-[10px] w-[700px] mt-14 outline outline-[#dee2e6] inline-flex gap-10">
         <div className="w-[199px] h-11 relative rounded-[5px]">
           <button

@@ -2,10 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
+import AddEmploy from "./AddEmploy";
+import { useEmployeeContext } from "@/context/EmployeeContext";
 
 export default function Header() {
+  const { employees, loading, error, refetch } = useEmployeeContext();
   return (
-    <header className="w-[1920px]  px-[120px] py-[30px] bg-white inline-flex justify-between items-center">
+    <header className="w-[1920px] px-[120px] py-[30px] bg-white inline-flex justify-between items-center">
       <div className="flex justify-start items-center gap-1">
         <Link
           href="/"
@@ -22,6 +25,8 @@ export default function Header() {
         </div>
       </div>
       <div className="flex justify-start items-center gap-10">
+        <AddEmploy fetchEmployees={refetch} />
+
         <Link
           href="/create-task"
           className="px-5 py-2.5 bg-[#8338ec] hover:bg-[#B588F4]  rounded-[5px] flex justify-center items-center gap-1"

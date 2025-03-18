@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import EmployeeModal from "@/components/EmployeeModal";
 import { Department, Priority } from "@/components/TaskCard";
 import { Status } from "@/components/TaskCard";
-import { useEmployees } from "@/hooks/useEmployees";
+import { useEmployeeContext } from "@/context/EmployeeContext";
 import AddEmploy from "@/components/AddEmploy";
 
 const priorities = await fetchPriorities();
@@ -53,7 +53,7 @@ const TaskForm = () => {
     deadline: "",
   });
 
-  const { employees, refetch: fetchEmployees } = useEmployees();
+  const { employees, loading, error, refetch } = useEmployeeContext();
 
   const validateFields = () => {
     let tempErrors = {
@@ -488,13 +488,13 @@ const TaskForm = () => {
         </div>
       </form>
       <EmployeeModal
-        refetchEmployees={fetchEmployees}
+        refetchEmployees={refetch}
         isOpen={isOpen}
         onClose={function (): void {
           setIsOpen(false);
         }}
       />
-      <AddEmploy fetchEmployees={fetchEmployees} />
+      <AddEmploy fetchEmployees={refetch} />
     </div>
   );
 };
