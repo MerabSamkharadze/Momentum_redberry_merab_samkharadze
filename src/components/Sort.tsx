@@ -121,14 +121,21 @@ export default function Sort() {
             >
               დეპარტამენტი
             </div>
-            <span className="w-6 h-6">
-              <Down
-                className={
-                  activeButton === "departments"
-                    ? "fill-[#8338ec]"
-                    : "fill-[#0d0e10]"
-                }
-              />
+
+            <span
+              className={`transform transition-transform ${
+                activeButton === "departments" ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              <div className="w-3.5 h-3.5">
+                <Down
+                  className={
+                    activeButton === "departments"
+                      ? "fill-[#8338ec]"
+                      : "fill-[#0d0e10]"
+                  }
+                />
+              </div>
             </span>
           </button>
         </div>
@@ -147,14 +154,20 @@ export default function Sort() {
             >
               პრიორიტეტი
             </div>
-            <span className="w-6 h-6">
-              <Down
-                className={
-                  activeButton === "priorities"
-                    ? "fill-[#8338ec]"
-                    : "fill-[#0d0e10]"
-                }
-              />
+            <span
+              className={`transform transition-transform ${
+                activeButton === "priorities" ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              <div className="w-3.5 h-3.5">
+                <Down
+                  className={
+                    activeButton === "priorities"
+                      ? "fill-[#8338ec]"
+                      : "fill-[#0d0e10]"
+                  }
+                />
+              </div>
             </span>
           </button>
         </div>
@@ -172,14 +185,20 @@ export default function Sort() {
             >
               თანამშრომელი
             </div>
-            <span className="w-6 h-6">
-              <Down
-                className={
-                  activeButton === "employees"
-                    ? "fill-[#8338ec]"
-                    : "fill-[#0d0e10]"
-                }
-              />
+            <span
+              className={`transform transition-transform ${
+                activeButton === "employees" ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              <div className="w-3.5 h-3.5">
+                <Down
+                  className={
+                    activeButton === "employees"
+                      ? "fill-[#8338ec]"
+                      : "fill-[#0d0e10]"
+                  }
+                />
+              </div>
             </span>
           </button>
         </div>

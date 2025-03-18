@@ -28,6 +28,7 @@ export default function Checker({
 
   const handleSubmit = () => {
     onSubmit(selected);
+    onClose();
   };
 
   return (
