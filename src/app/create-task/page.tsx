@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { z } from "zod";
 import { departments } from "../../components/Sort";
 import { fetchPriorities } from "@/actions";
 import { fetchStatuses } from "@/actions";
@@ -10,10 +11,62 @@ import EmployeeModal from "@/components/EmployeeModal";
 import { Department, Priority } from "@/components/TaskCard";
 import { Status } from "@/components/TaskCard";
 import { useEmployeeContext } from "@/context/EmployeeContext";
-import AddEmploy from "@/components/AddEmploy";
 
 const priorities = await fetchPriorities();
 const statuses = await fetchStatuses();
+
+// Zod Schema-ს განსაზღვრავთ, რომელიც იმოწმებს:
+// 1. სათაური – აუცილებელი, 3-დან 255 სიმბოლომდე.
+// 2. აღწერა – არავალასებელი, მაგრამ თუ მითითებულია, უნდა შეიცავდეს მინიმუმ 4 სიტყვას და მაქსიმუმ 255 სიმბოლოს.
+// 3. დეპარტამენტი – აუცილებელი.
+// 4. თანამშრომელი – ობიექტი, რომლის id ველი აუცილებელია.
+// 5. დედლაინი – აუცილებელი და უნდა იყოს მომავალ თარიღი (მინიმუმ ხვალ).
+const taskFormSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .nonempty("სავალდებულო")
+    .min(3, "მინიმუმ 3 სიმბოლო")
+    .max(255, "მაქსიმუმ 255 სიმბოლო"),
+  description: z
+    .string()
+    .optional()
+    .refine(
+      (val) => {
+        if (!val || val.trim() === "") return true;
+        return val.trim().split(/\s+/).length >= 4;
+      },
+      { message: "მინიმუმ 4 სიტყვა" }
+    )
+    .refine(
+      (val) => {
+        if (!val || val.trim() === "") return true;
+        return val.trim().length <= 255;
+      },
+      { message: "მაქსიმუმ 255 სიმბოლო" }
+    ),
+  selectedDepartment: z.string().trim().nonempty("სავალდებულო"),
+  selectedEmployee: z.object({
+    id: z
+      .number()
+      .nullable()
+      .refine((val) => val !== null, { message: "სავალდებულო" }),
+  }),
+  deadline: z
+    .string()
+    .nonempty("სავალდებულო")
+    .refine(
+      (val) => {
+        const selDate = new Date(val);
+        const minDate = new Date();
+        minDate.setDate(minDate.getDate() + 1);
+        selDate.setHours(0, 0, 0, 0);
+        minDate.setHours(0, 0, 0, 0);
+        return selDate >= minDate;
+      },
+      { message: "გთხოვთ აირჩიეთ მომავალ თარიღი" }
+    ),
+});
 
 const TaskForm = () => {
   const router = useRouter();
@@ -21,17 +74,17 @@ const TaskForm = () => {
   const tomorrowDate = new Date();
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
   const formattedTomorrow = tomorrowDate.toISOString().split("T")[0];
+
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState<{
-    id: any;
+    id: number | null;
     avatar?: string;
     name?: string;
     department?: { name: string; id: number };
   }>({ id: null, avatar: "", name: "", department: { name: "", id: 0 } });
-
   const [selectedPriority, setSelectedPriority] = useState<{
     icon: string;
     id: number;
@@ -55,10 +108,7 @@ const TaskForm = () => {
 
   const { employees, loading, error, refetch } = useEmployeeContext();
 
-  // ახალი ლოდერის სტატუსის state
-  const [isLoading, setIsLoading] = useState(false);
-
-  // localStorage-დან ინფორმაციის ჩატვირთვა
+  // ფორმის მონაცემების დატვირთვა ლოკალურ მეხსიერებიდან
   useEffect(() => {
     const storedData = localStorage.getItem("taskFormData");
     if (storedData) {
@@ -74,7 +124,7 @@ const TaskForm = () => {
     }
   }, []);
 
-  // ფორმის ინფორმაციის შენახვა localStorage-ში
+  // ფორმის მონაცემების შენახვა ლოკალურ მეხსიერებაში
   useEffect(() => {
     const formData = {
       title,
@@ -96,57 +146,47 @@ const TaskForm = () => {
     deadline,
   ]);
 
+  // Zod-ის გამოყენებით ვალიდაციას უწევი ფუნქცია
   const validateFields = () => {
-    let tempErrors = {
-      title: "",
-      description: "",
-      department: "",
-      employee: "",
-      deadline: "",
-    };
+    const result = taskFormSchema.safeParse({
+      title,
+      description,
+      selectedDepartment,
+      selectedEmployee,
+      deadline,
+    });
 
-    if (!title.trim()) {
-      tempErrors.title = "სავალდებულო";
-    } else if (title.trim().length < 3) {
-      tempErrors.title = "მინიმუმ 3 სიმბოლო";
-    } else if (title.trim().length > 255) {
-      tempErrors.title = "მაქსიმუმ 255 სიმბოლო";
-    }
-
-    if (description.trim()) {
-      if (description.trim().split(/\s+/).length < 4) {
-        tempErrors.description = "მინიმუმ 4 სიტყვა";
-      }
-      if (description.trim().length > 255) {
-        tempErrors.description = "მაქსიმუმ 255 სიმბოლო";
-      }
-    }
-
-    if (!selectedDepartment) {
-      tempErrors.department = "სავალდებულო";
-    }
-
-    if (selectedDepartment && !selectedEmployee.id) {
-      tempErrors.employee = "სავალდებულო";
-    }
-
-    if (!deadline) {
-      tempErrors.deadline = "სავალდებულო";
+    if (!result.success) {
+      const tempErrors = {
+        title: "",
+        description: "",
+        department: "",
+        employee: "",
+        deadline: "",
+      };
+      result.error.errors.forEach((err) => {
+        const field = err.path[0];
+        if (field === "title") tempErrors.title = err.message;
+        if (field === "description") tempErrors.description = err.message;
+        if (field === "selectedDepartment") tempErrors.department = err.message;
+        if (field === "selectedEmployee") tempErrors.employee = err.message;
+        if (field === "deadline") tempErrors.deadline = err.message;
+      });
+      setErrors(tempErrors);
+      return false;
     } else {
-      const selDate = new Date(deadline);
-      const minDate = new Date();
-      minDate.setDate(minDate.getDate() + 1);
-      selDate.setHours(0, 0, 0, 0);
-      minDate.setHours(0, 0, 0, 0);
-      if (selDate < minDate) {
-        tempErrors.deadline = "გთხოვთ აირჩიეთ მომავალ თარიღი";
-      }
+      setErrors({
+        title: "",
+        description: "",
+        department: "",
+        employee: "",
+        deadline: "",
+      });
+      return true;
     }
-
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every((msg) => msg === "");
   };
 
+  // ვალიდაცია ხდება ფორმის არანახლად ცვლილებებზე
   useEffect(() => {
     validateFields();
   }, [title, description, selectedDepartment, selectedEmployee, deadline]);
@@ -176,8 +216,6 @@ const TaskForm = () => {
     const isValid = validateFields();
     if (!isValid) return;
 
-    // გაჩვენებთ ლოდერს
-    setIsLoading(true);
     try {
       const response = await fetch(
         "https://momentum.redberryinternship.ge/api/tasks",
@@ -207,26 +245,15 @@ const TaskForm = () => {
 
       await response.json();
 
-      // Optional: წაშალეთ ფორმის მონაცემები წარმატებული გაგზავნის შემდეგ
       localStorage.removeItem("taskFormData");
-
       router.push("/");
     } catch (error) {
       console.error("Error submitting the employee data:", error);
-    } finally {
-      // დამალავთ ლოდერს
-      setIsLoading(false);
     }
   };
 
   return (
     <div className="ml-[88px] p-8 relative">
-      {/* ლოდერის ინტერფეისი */}
-      {isLoading && (
-        <div className="absolute inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
-          <div className="w-16 h-16 border-4 border-violet-600 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      )}
       <div className="w-[1684px] text-neutral-800 text-4xl font-semibold font-sans mb-6">
         შექმენი ახალი დავალება
       </div>
@@ -234,8 +261,9 @@ const TaskForm = () => {
         onSubmit={handleSubmit}
         className="w-[1684px] h-[958px] relative bg-purple-50/60 rounded outline-[0.30px] outline-offset-[-0.30px] outline-violet-200 p-10"
       >
-        {/* ფორმის მარცხენა კოლონა */}
+        {/* ფორმის ბლოკი მარცხნივ */}
         <div className="w-[550px] ml-[55px] mt-[65px] flex flex-col gap-14">
+          {/* სათაურის სექცია */}
           <div className="h-28 flex flex-col">
             <div className="py-1.5 flex items-start">
               <label className="text-neutral-700 text-base font-normal font-sans">
@@ -262,6 +290,7 @@ const TaskForm = () => {
             </div>
           </div>
 
+          {/* აღწერის სექცია */}
           <div className="w-[550px] h-48 flex flex-col">
             <div className="py-1.5 flex items-start">
               <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
@@ -286,6 +315,7 @@ const TaskForm = () => {
             </div>
           </div>
 
+          {/* პრიორიტეტის და სტატუსის სექცია */}
           <div className="flex gap-8">
             <div className="h-64 flex flex-col">
               <div className="py-1.5 flex items-center">
@@ -391,7 +421,7 @@ const TaskForm = () => {
           </div>
         </div>
 
-        {/* მარჯვენა კოლონა */}
+        {/* მარჯვენა სექცია */}
         <div className="absolute left-[766px] top-[105px] w-[550px] flex flex-col gap-6">
           <div className="h-28 flex flex-col">
             <div className="py-1.5 flex items-center">
@@ -545,7 +575,7 @@ const TaskForm = () => {
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               min={formattedTomorrow}
-              className=" p-2 rounded-md  bg-white text-gray-700 focus:ring-2 outline-1 outline-zinc-200 w-80 ml-0.5 uppercase"
+              className="p-2 rounded-md bg-white text-gray-700 focus:ring-2 outline-1 outline-zinc-200 w-80 ml-0.5 uppercase"
             />
             {errors.deadline && (
               <span
