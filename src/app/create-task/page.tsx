@@ -15,12 +15,6 @@ import { useEmployeeContext } from "@/context/EmployeeContext";
 const priorities = await fetchPriorities();
 const statuses = await fetchStatuses();
 
-// Zod Schema-ს განსაზღვრავთ, რომელიც იმოწმებს:
-// 1. სათაური – აუცილებელი, 3-დან 255 სიმბოლომდე.
-// 2. აღწერა – არავალასებელი, მაგრამ თუ მითითებულია, უნდა შეიცავდეს მინიმუმ 4 სიტყვას და მაქსიმუმ 255 სიმბოლოს.
-// 3. დეპარტამენტი – აუცილებელი.
-// 4. თანამშრომელი – ობიექტი, რომლის id ველი აუცილებელია.
-// 5. დედლაინი – აუცილებელი და უნდა იყოს მომავალ თარიღი (მინიმუმ ხვალ).
 const taskFormSchema = z.object({
   title: z
     .string()
@@ -108,7 +102,6 @@ const TaskForm = () => {
 
   const { employees, loading, error, refetch } = useEmployeeContext();
 
-  // ფორმის მონაცემების დატვირთვა ლოკალურ მეხსიერებიდან
   useEffect(() => {
     const storedData = localStorage.getItem("taskFormData");
     if (storedData) {
@@ -124,7 +117,6 @@ const TaskForm = () => {
     }
   }, []);
 
-  // ფორმის მონაცემების შენახვა ლოკალურ მეხსიერებაში
   useEffect(() => {
     const formData = {
       title,
@@ -146,7 +138,6 @@ const TaskForm = () => {
     deadline,
   ]);
 
-  // Zod-ის გამოყენებით ვალიდაციას უწევი ფუნქცია
   const validateFields = () => {
     const result = taskFormSchema.safeParse({
       title,
@@ -186,7 +177,6 @@ const TaskForm = () => {
     }
   };
 
-  // ვალიდაცია ხდება ფორმის არანახლად ცვლილებებზე
   useEffect(() => {
     validateFields();
   }, [title, description, selectedDepartment, selectedEmployee, deadline]);

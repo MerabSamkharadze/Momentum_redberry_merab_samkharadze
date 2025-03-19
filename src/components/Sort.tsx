@@ -11,7 +11,6 @@ import { useEmployeeContext } from "@/context/EmployeeContext";
 type ButtonGroup = "departments" | "priorities" | "employees";
 export type Priority = { id: number; name: string; icon: string };
 export const departments = await fetchDepartments();
-
 const priorities = await fetchPriorities();
 
 export default function Sort() {
@@ -88,6 +87,28 @@ export default function Sort() {
     setIsOpen(false);
   };
 
+  // ინდივიდუალური წაშლის ფუნქციები
+  const handleRemoveDepartment = (id: number) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      departments: prev.departments.filter((depId) => depId !== id),
+    }));
+  };
+
+  const handleRemovePriority = (id: number) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      priorities: prev.priorities.filter((pId) => pId !== id),
+    }));
+  };
+
+  const handleRemoveEmployee = (id: number) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      employee: prev.employee.filter((empId) => empId !== id),
+    }));
+  };
+
   useEffect(() => {
     const params = new URLSearchParams();
 
@@ -121,7 +142,6 @@ export default function Sort() {
             >
               დეპარტამენტი
             </div>
-
             <span
               className={`transform transition-transform ${
                 activeButton === "departments" ? "rotate-180" : "rotate-0"
@@ -217,32 +237,79 @@ export default function Sort() {
         />
       )}
 
-      {selectedOptions.departments.length > 0 ||
-      selectedOptions.priorities.length > 0 ? (
+      {(selectedOptions.departments.length > 0 ||
+        selectedOptions.priorities.length > 0 ||
+        selectedOptions.employee.length > 0) && (
         <div className="mt-10">
-          <div className="flex gap-2 p-4 bg-gray-100 rounded">
-            <div>
-              {departments
+          <div className="flex flex-wrap gap-2 p-4 rounded">
+            {selectedOptions.departments.length > 0 &&
+              departments
                 .filter((dept: Department) =>
                   selectedOptions.departments.includes(dept.id)
                 )
-                .map((dept: Department) => dept.name)
-                .join(", ")}
-            </div>
-            <div className="flex gap-2">
-              {priorities
+                .map((dept: Department) => (
+                  <div
+                    key={dept.id}
+                    className="cursor-pointer px-2.5 py-1.5 bg-white rounded-[43px] outline outline-gray-300 inline-flex items-center gap-1"
+                    onClick={() => handleRemoveDepartment(dept.id)}
+                  >
+                    <div className="text-center text-neutral-700 text-sm font-normal font-['FiraGO']">
+                      {dept.name}
+                    </div>
+                    <div className="w-3.5 h-3.5 relative overflow-hidden">
+                      <img src="/x.svg" alt="remove" />
+                    </div>
+                  </div>
+                ))}
+
+            {selectedOptions.priorities.length > 0 &&
+              priorities
                 .filter((item: Priority) =>
                   selectedOptions.priorities.includes(item.id)
                 )
-                .map((item: { name: any }) => item.name)
-                .join(", ")}
-              <button onClick={handleClear} className="hover:scale-110 rounded">
-                გასუფთავება
-              </button>
-            </div>
+                .map((item: Priority) => (
+                  <div
+                    key={item.id}
+                    className="cursor-pointer px-2.5 py-1.5 bg-white rounded-[43px] outline outline-gray-300 inline-flex items-center gap-1"
+                    onClick={() => handleRemovePriority(item.id)}
+                  >
+                    <div className="text-center text-neutral-700 text-sm font-normal font-['FiraGO']">
+                      {item.name}
+                    </div>
+                    <div className="w-3.5 h-3.5 relative overflow-hidden">
+                      <img src="/x.svg" alt="remove" />
+                    </div>
+                  </div>
+                ))}
+
+            {/* არჩეული თანამშრომლები */}
+            {selectedOptions.employee.length > 0 &&
+              employees
+                .filter((emp: any) => selectedOptions.employee.includes(emp.id))
+                .map((emp: any) => (
+                  <div
+                    key={emp.id}
+                    onClick={() => handleRemoveEmployee(emp.id)}
+                    className="cursor-pointer px-2.5 py-1.5 bg-white rounded-[43px] outline outline-gray-300 inline-flex items-center gap-1"
+                  >
+                    <div className="text-center text-neutral-700 text-sm font-normal font-['FiraGO']">
+                      {emp.name}
+                    </div>
+                    <div className="w-3.5 h-3.5 relative z-0 overflow-hidden">
+                      <img src="/x.svg" alt="remove" />
+                    </div>
+                  </div>
+                ))}
+
+            <button
+              onClick={handleClear}
+              className="hover:scale-105 rounded ml-2 text-neutral-500 transition-all cursor-pointer"
+            >
+              გასუფთავება
+            </button>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

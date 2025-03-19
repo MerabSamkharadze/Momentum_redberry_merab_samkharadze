@@ -32,7 +32,7 @@ export default function Checker({
   };
 
   return (
-    <div className="w-[688px]  px-7 pt-10 pb-5 bg-white rounded-[10px] absolute mt-28 outline outline-violet-600 flex flex-col gap-6">
+    <div className="w-[688px]  px-7 pt-10 pb-5 bg-white rounded-[10px] absolute mt-28 outline outline-violet-600 flex flex-col gap-6 z-50">
       <div className="flex flex-col gap-5 max-h-[500px] overflow-scroll">
         {items.map((item) => (
           <div key={item.id}>
