@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Key } from "react";
+import React, { useState, useEffect } from "react";
 import { departments } from "../../components/Sort";
 import { fetchPriorities } from "@/actions";
 import { fetchStatuses } from "@/actions";
@@ -54,6 +54,47 @@ const TaskForm = () => {
   });
 
   const { employees, loading, error, refetch } = useEmployeeContext();
+
+  // ახალი ლოდერის სტატუსის state
+  const [isLoading, setIsLoading] = useState(false);
+
+  // localStorage-დან ინფორმაციის ჩატვირთვა
+  useEffect(() => {
+    const storedData = localStorage.getItem("taskFormData");
+    if (storedData) {
+      const data = JSON.parse(storedData);
+      if (data.title) setTitle(data.title);
+      if (data.description) setDescription(data.description);
+      if (data.selectedDepartment)
+        setSelectedDepartment(data.selectedDepartment);
+      if (data.selectedEmployee) setSelectedEmployee(data.selectedEmployee);
+      if (data.selectedPriority) setSelectedPriority(data.selectedPriority);
+      if (data.selectedStatus) setSelectedStatus(data.selectedStatus);
+      if (data.deadline) setDeadline(data.deadline);
+    }
+  }, []);
+
+  // ფორმის ინფორმაციის შენახვა localStorage-ში
+  useEffect(() => {
+    const formData = {
+      title,
+      description,
+      selectedDepartment,
+      selectedEmployee,
+      selectedPriority,
+      selectedStatus,
+      deadline,
+    };
+    localStorage.setItem("taskFormData", JSON.stringify(formData));
+  }, [
+    title,
+    description,
+    selectedDepartment,
+    selectedEmployee,
+    selectedPriority,
+    selectedStatus,
+    deadline,
+  ]);
 
   const validateFields = () => {
     let tempErrors = {
@@ -135,6 +176,8 @@ const TaskForm = () => {
     const isValid = validateFields();
     if (!isValid) return;
 
+    // გაჩვენებთ ლოდერს
+    setIsLoading(true);
     try {
       const response = await fetch(
         "https://momentum.redberryinternship.ge/api/tasks",
@@ -164,14 +207,26 @@ const TaskForm = () => {
 
       await response.json();
 
+      // Optional: წაშალეთ ფორმის მონაცემები წარმატებული გაგზავნის შემდეგ
+      localStorage.removeItem("taskFormData");
+
       router.push("/");
     } catch (error) {
       console.error("Error submitting the employee data:", error);
+    } finally {
+      // დამალავთ ლოდერს
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="ml-[88px] p-8">
+    <div className="ml-[88px] p-8 relative">
+      {/* ლოდერის ინტერფეისი */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
+          <div className="w-16 h-16 border-4 border-violet-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
       <div className="w-[1684px] text-neutral-800 text-4xl font-semibold font-sans mb-6">
         შექმენი ახალი დავალება
       </div>
@@ -179,13 +234,14 @@ const TaskForm = () => {
         onSubmit={handleSubmit}
         className="w-[1684px] h-[958px] relative bg-purple-50/60 rounded outline-[0.30px] outline-offset-[-0.30px] outline-violet-200 p-10"
       >
+        {/* ფორმის მარცხენა კოლონა */}
         <div className="w-[550px] ml-[55px] mt-[65px] flex flex-col gap-14">
           <div className="h-28 flex flex-col">
             <div className="py-1.5 flex items-start">
               <label className="text-neutral-700 text-base font-normal font-sans">
                 სათაური
               </label>
-              <span className="ml-1 ">*</span>
+              <span className="ml-1">*</span>
             </div>
             <div className="flex flex-col gap-1">
               <input
@@ -193,7 +249,7 @@ const TaskForm = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="სათაური"
-                className={`w-[550px] p-3.5 bg-white rounded-[5px] outline-1 outline-zinc-200 `}
+                className="w-[550px] p-3.5 bg-white rounded-[5px] outline-1 outline-zinc-200"
               />
               {errors.title && (
                 <span
@@ -217,7 +273,7 @@ const TaskForm = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="აღწერა"
-                className={`w-[550px] h-32 p-3.5 bg-white rounded-[5px] outline-1 outline-zinc-200 `}
+                className="w-[550px] h-32 p-3.5 bg-white rounded-[5px] outline-1 outline-zinc-200"
               />
               {errors.description && (
                 <span
@@ -236,7 +292,7 @@ const TaskForm = () => {
                 <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
                   პრიორიტეტი
                 </label>
-                <span className="ml-1 ">*</span>
+                <span className="ml-1">*</span>
               </div>
               <div
                 className="w-64 h-11 p-3.5 bg-white rounded-[5px] outline-1 outline-zinc-200 flex items-center justify-between cursor-pointer"
@@ -294,7 +350,7 @@ const TaskForm = () => {
                 <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
                   სტატუსი
                 </label>
-                <span className="ml-1 ">*</span>
+                <span className="ml-1">*</span>
               </div>
               <div
                 className="w-64 p-3.5 bg-white rounded-[5px] outline-1 outline-gray-300 flex items-center gap-2.5 cursor-pointer"
@@ -335,13 +391,14 @@ const TaskForm = () => {
           </div>
         </div>
 
+        {/* მარჯვენა კოლონა */}
         <div className="absolute left-[766px] top-[105px] w-[550px] flex flex-col gap-6">
           <div className="h-28 flex flex-col">
             <div className="py-1.5 flex items-center">
               <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
                 დეპარტამენტი
               </label>
-              <span className="ml-1 ">*</span>
+              <span className="ml-1">*</span>
             </div>
             <div className="z-40">
               <div
@@ -380,10 +437,24 @@ const TaskForm = () => {
 
           <div className="w-[550px] h-28 flex mt-7 flex-col z-20">
             <div className="py-1.5 flex items-center">
-              <label className="text-neutral-700 text-base font-normal font-['FiraGO']">
+              <label
+                className={` text-base font-normal font-['FiraGO'] ${
+                  filteredEmployees.length > 0
+                    ? "text-neutral-700"
+                    : "text-[#DEE2E6]"
+                }`}
+              >
                 პასუხისმგებელი თანამშრომელი
               </label>
-              <span className="ml-1 ">*</span>
+              <span
+                className={`ml-1 ${
+                  filteredEmployees.length > 0
+                    ? "text-neutral-700"
+                    : "text-[#DEE2E6]"
+                }`}
+              >
+                *
+              </span>
             </div>
             <div className="relative">
               <div
@@ -401,7 +472,7 @@ const TaskForm = () => {
                       <span>{selectedEmployee.name}</span>
                     </div>
                   ) : (
-                    "თანამშრომელი"
+                    ""
                   )}
                 </span>
                 <span
@@ -420,11 +491,11 @@ const TaskForm = () => {
                     onClick={() => {
                       setIsOpen(true);
                     }}
-                    className="self-stretch w-full p-6 overflow-hidden cursor-pointer  h-12 px-3 py-3 bg-white hover:bg-gray-100 inline-flex justify-start items-center gap-1.5"
+                    className="self-stretch w-full p-6 overflow-hidden cursor-pointer h-12 px-3 py-3 bg-white hover:bg-gray-100 inline-flex justify-start items-center gap-1.5"
                   >
-                    <div className="flex  justify-start items-center gap-2">
-                      <div className="w-4 h-4 p-2.5  rounded-[30px]  outline-[1.50px] outline-offset-[-1.50px] outline-violet-600 inline-flex flex-col justify-center items-center gap-2.5">
-                        <div className="justify-start text-violet-600 text-2xl font-light font-sans ">
+                    <div className="flex justify-start items-center gap-2">
+                      <div className="w-4 h-4 p-2.5 rounded-[30px] outline-[1.50px] outline-offset-[-1.50px] outline-violet-600 inline-flex flex-col justify-center items-center gap-2.5">
+                        <div className="justify-start text-violet-600 text-2xl font-light font-sans">
                           +
                         </div>
                       </div>
@@ -474,7 +545,7 @@ const TaskForm = () => {
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               min={formattedTomorrow}
-              className={`appearance-none p-2 rounded-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 w-80 ml-0.5 uppercase `}
+              className=" p-2 rounded-md  bg-white text-gray-700 focus:ring-2 outline-1 outline-zinc-200 w-80 ml-0.5 uppercase"
             />
             {errors.deadline && (
               <span
@@ -503,7 +574,7 @@ const TaskForm = () => {
               !selectedEmployee.id ||
               !deadline ||
               Object.values(errors).some((msg) => msg !== "")
-                ? " cursor-not-allowed"
+                ? "cursor-not-allowed"
                 : ""
             }`}
           >
@@ -514,11 +585,8 @@ const TaskForm = () => {
       <EmployeeModal
         refetchEmployees={refetch}
         isOpen={isOpen}
-        onClose={function (): void {
-          setIsOpen(false);
-        }}
+        onClose={() => setIsOpen(false)}
       />
-      <AddEmploy fetchEmployees={refetch} />
     </div>
   );
 };
