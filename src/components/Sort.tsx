@@ -240,7 +240,7 @@ export default function Sort() {
       {(selectedOptions.departments.length > 0 ||
         selectedOptions.priorities.length > 0 ||
         selectedOptions.employee.length > 0) && (
-        <div className="mt-10">
+        <div>
           <div className="flex flex-wrap gap-2 p-4 rounded">
             {selectedOptions.departments.length > 0 &&
               departments

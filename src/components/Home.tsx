@@ -53,7 +53,7 @@ export default function Home() {
         დავალებების გვერდი
       </div>
       <Sort />
-      <div className="grid grid-cols-4 gap-10 mt-20">
+      <div className="grid grid-cols-4 gap-10 mt-10">
         <Sveti tasks={start_tasks} column_name="დასაწყები" />
         <Sveti tasks={progress_tasks} column_name="პროგრესში" />
         <Sveti tasks={doneForTest_tasks} column_name="მზად ტესტირებისთვის" />
