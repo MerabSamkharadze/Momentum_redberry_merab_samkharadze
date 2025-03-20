@@ -59,7 +59,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
     setValue,
     watch,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors, isValid, touchedFields, isSubmitted },
   } = useForm<EmployeeForm>({
     resolver: zodResolver(employeeFormSchema),
     mode: "onChange",
@@ -88,7 +88,8 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
   const isLastNameMinValid = lastNameValue.length >= 2;
   const isLastNameMaxValid = lastNameValue.length <= 255;
   const isLastNamePatternValid = /^[A-Za-zა-ჰ]+$/.test(lastNameValue);
-  // --- დროპდაუნების სამართავი სტეიტები ---
+
+  // --- Dropdown state ---
   const [openDepartment, setOpenDepartment] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
@@ -197,7 +198,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                   </span>
                   <span>*</span>
                 </div>
-                <div className="self-stretch h-10 p-2.5 bg-white rounded-md outline  outline-offset-[-1px] outline-gray-300 inline-flex justify-between items-center">
+                <div className="self-stretch h-10 p-2.5 bg-white rounded-md outline outline-offset-[-1px] outline-gray-300 inline-flex justify-between items-center">
                   <input
                     type="text"
                     className="w-full bg-transparent focus:outline-none"
@@ -208,36 +209,62 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                 <div className="flex flex-col gap-1 mt-1">
                   <span
                     className={`text-xs flex ${
-                      isFirstNameMinValid ? "text-[#08A508]" : "text-[#FA4D4D]"
+                      touchedFields.firstName
+                        ? isFirstNameMinValid
+                          ? "text-[#08A508]"
+                          : "text-[#FA4D4D]"
+                        : "text-neutral-500"
                     }`}
                   >
                     <img
-                      src={`/check${isFirstNameMinValid ? "_green" : ""}.svg`}
+                      src={`/check${
+                        touchedFields.firstName && isFirstNameMinValid
+                          ? "_green"
+                          : touchedFields.firstName && !isFirstNameMinValid
+                          ? "_red"
+                          : ""
+                      }.svg`}
                       alt="check"
                     />
                     მინიმუმ 2 სიმბოლო
                   </span>
                   <span
                     className={`text-xs flex ${
-                      isFirstNameMaxValid ? "text-[#08A508]" : "text-[#FA4D4D]"
+                      touchedFields.firstName
+                        ? isFirstNameMaxValid
+                          ? "text-[#08A508]"
+                          : "text-[#FA4D4D]"
+                        : "text-neutral-500"
                     }`}
                   >
                     <img
-                      src={`/check${isFirstNameMaxValid ? "_green" : ""}.svg`}
+                      src={`/check${
+                        touchedFields.firstName && isFirstNameMaxValid
+                          ? "_green"
+                          : touchedFields.firstName && !isFirstNameMaxValid
+                          ? "_red"
+                          : ""
+                      }.svg`}
                       alt="check"
                     />
                     მაქსიმუმ 255 სიმბოლო
                   </span>
                   <span
                     className={`text-xs flex ${
-                      isFirstNamePatternValid
-                        ? "text-[#08A508]"
-                        : "text-[#FA4D4D]"
+                      touchedFields.firstName
+                        ? isFirstNamePatternValid
+                          ? "text-[#08A508]"
+                          : "text-[#FA4D4D]"
+                        : "text-neutral-500"
                     }`}
                   >
                     <img
                       src={`/check${
-                        isFirstNamePatternValid ? "_green" : ""
+                        touchedFields.firstName && isFirstNamePatternValid
+                          ? "_green"
+                          : touchedFields.firstName && !isFirstNamePatternValid
+                          ? "_red"
+                          : ""
                       }.svg`}
                       alt="check"
                     />
@@ -254,7 +281,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                   </span>
                   <span>*</span>
                 </div>
-                <div className="self-stretch h-10 p-2.5 bg-white rounded-md outline  outline-offset-[-1px] outline-gray-300 inline-flex justify-between items-center">
+                <div className="self-stretch h-10 p-2.5 bg-white rounded-md outline outline-offset-[-1px] outline-gray-300 inline-flex justify-between items-center">
                   <input
                     type="text"
                     className="w-full bg-transparent focus:outline-none"
@@ -264,36 +291,62 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                 <div className="flex flex-col gap-1 mt-1">
                   <span
                     className={`text-xs flex ${
-                      isLastNameMinValid ? "text-[#08A508]" : "text-[#FA4D4D]"
+                      touchedFields.lastName
+                        ? isLastNameMinValid
+                          ? "text-[#08A508]"
+                          : "text-[#FA4D4D]"
+                        : "text-neutral-500"
                     }`}
                   >
                     <img
-                      src={`/check${isLastNameMinValid ? "_green" : ""}.svg`}
+                      src={`/check${
+                        touchedFields.lastName && isLastNameMinValid
+                          ? "_green"
+                          : touchedFields.lastName && !isLastNameMinValid
+                          ? "_red"
+                          : ""
+                      }.svg`}
                       alt="check"
                     />
                     მინიმუმ 2 სიმბოლო
                   </span>
                   <span
                     className={`text-xs flex ${
-                      isLastNameMaxValid ? "text-[#08A508]" : "text-[#FA4D4D]"
+                      touchedFields.lastName
+                        ? isLastNameMaxValid
+                          ? "text-[#08A508]"
+                          : "text-[#FA4D4D]"
+                        : "text-neutral-500"
                     }`}
                   >
                     <img
-                      src={`/check${isLastNameMaxValid ? "_green" : ""}.svg`}
+                      src={`/check${
+                        touchedFields.lastName && isLastNameMaxValid
+                          ? "_green"
+                          : touchedFields.lastName && !isLastNameMaxValid
+                          ? "_red"
+                          : ""
+                      }.svg`}
                       alt="check"
                     />
                     მაქსიმუმ 255 სიმბოლო
                   </span>
                   <span
                     className={`text-xs flex ${
-                      isLastNamePatternValid
-                        ? "text-[#08A508]"
-                        : "text-[#FA4D4D]"
+                      touchedFields.lastName
+                        ? isLastNamePatternValid
+                          ? "text-[#08A508]"
+                          : "text-[#FA4D4D]"
+                        : "text-neutral-500"
                     }`}
                   >
                     <img
                       src={`/check${
-                        isLastNamePatternValid ? "_green" : ""
+                        touchedFields.lastName && isLastNamePatternValid
+                          ? "_green"
+                          : touchedFields.lastName && !isLastNamePatternValid
+                          ? "_red"
+                          : ""
                       }.svg`}
                       alt="check"
                     />
@@ -311,7 +364,7 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                 </span>
                 <span>*</span>
               </div>
-              <div className="self-stretch h-28 relative bg-white rounded-lg outline-1 outline-offset-[-1px]  outline-dashed  outline-gray-300  overflow-hidden">
+              <div className="self-stretch h-28 relative bg-white rounded-lg outline-1 outline-offset-[-1px] outline-dashed outline-gray-300 overflow-hidden">
                 {avatarPreview ? (
                   <>
                     <Image
@@ -346,14 +399,14 @@ const EmployeeModal: React.FC<EmployeeModalProps> = ({
                   </label>
                 )}
               </div>
-              {!avatarPreview && errors.avatar && (
+              {!avatarPreview && errors.avatar && isSubmitted && (
                 <span className="text-xs text-[#FA4D4D]">
                   {errors.avatar.message as string}
                 </span>
               )}
             </div>
 
-            {/* --- დეპარტამენტი --- */}
+            {/* დეპარტამენტი */}
             <div className="h-28 w-96 flex flex-col">
               <div className="py-1.5 flex items-center">
                 <label className="text-neutral-700 text-base font-normal font-['FiraGO']">

@@ -76,7 +76,7 @@ export default function TaskCard({ task, column_name }: TaskCardProps) {
       className={`p-5 bg-white rounded-[15px] border  shadow-sm flex flex-col gap-7 w-[381px] ${
         column_name === "დასაწყები"
           ? "border-[#FFC107]"
-          : column_name === "პროგრესიში"
+          : column_name === "პროგრესში"
           ? "border-[#FB5607]"
           : column_name === "მზად ტესტირებისთვის"
           ? "border-[#FF006E]"
