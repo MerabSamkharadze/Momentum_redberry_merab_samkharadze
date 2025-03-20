@@ -511,11 +511,11 @@ const TaskForm = () => {
                     onClick={() => {
                       setIsOpen(true);
                     }}
-                    className="self-stretch w-full p-6 overflow-hidden cursor-pointer h-12 px-3 py-3 bg-white hover:bg-gray-100 inline-flex justify-start items-center gap-1.5"
+                    className="self-stretch w-full p-10 overflow-hidden cursor-pointer h-14 px-3  bg-white hover:bg-gray-100 inline-flex justify-start items-center gap-1.5"
                   >
                     <div className="flex justify-start items-center gap-2">
-                      <div className="w-4 h-4 p-2.5 rounded-[30px] outline-[1.50px] outline-offset-[-1.50px] outline-violet-600 inline-flex flex-col justify-center items-center gap-2.5">
-                        <div className="justify-start text-violet-600 text-2xl font-light font-sans">
+                      <div className="w-5 h-5 p-3 rounded-[30px] outline-[1.50px] outline-offset-[-1.50px] outline-violet-600 inline-flex flex-col justify-center items-center gap-2.5">
+                        <div className="justify-start mb-1 text-violet-600 text-2xl font-light font-sans leading-none">
                           +
                         </div>
                       </div>

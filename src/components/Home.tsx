@@ -11,7 +11,6 @@ export default function Home() {
   const [statuses, setStatuses] = useState<
     { id: number; name: string; tasks: Task[] }[]
   >([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const priority = searchParams.get("priority");
   const department = searchParams.get("department");
@@ -19,7 +18,6 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchTasks() {
-      setIsLoading(true);
       try {
         const queryParams = new URLSearchParams();
         if (priority) queryParams.append("priority", priority);
@@ -38,8 +36,6 @@ export default function Home() {
         setStatuses(data);
       } catch (error) {
         console.error("Error fetching tasks:", error);
-      } finally {
-        setIsLoading(false);
       }
     }
 
@@ -57,18 +53,13 @@ export default function Home() {
         დავალებების გვერდი
       </div>
       <Sort />
-      {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-4 gap-10 mt-10">
-          <Sveti tasks={start_tasks} column_name="დასაწყები" />
-          <Sveti tasks={progress_tasks} column_name="პროგრესში" />
-          <Sveti tasks={doneForTest_tasks} column_name="მზად ტესტირებისთვის" />
-          <Sveti tasks={done_tasks} column_name="დასრულებული" />
-        </div>
-      )}
+
+      <div className="grid grid-cols-4 gap-10 mt-10">
+        <Sveti tasks={start_tasks} column_name="დასაწყები" />
+        <Sveti tasks={progress_tasks} column_name="პროგრესში" />
+        <Sveti tasks={doneForTest_tasks} column_name="მზად ტესტირებისთვის" />
+        <Sveti tasks={done_tasks} column_name="დასრულებული" />
+      </div>
     </main>
   );
 }
