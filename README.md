@@ -4,18 +4,19 @@ Momentum is an **internal Progress Tracking application for Redberry**, allowing
 
 ## 📌 Features
 
-- **Tasks Page**  
+- **Tasks Page**
   - Filter tasks by department, employee name, and priority
-  
-- **Task Details Page**  
+- **Task Details Page**
+
   - View full task details
   - Change task status
   - Delete tasks
 
-- **Task Creation Page**  
+- **Task Creation Page**
+
   - Create new tasks and assign them to employees
 
-- **Employee Creation Modal**  
+- **Employee Creation Modal**
   - Add new employees
 
 ---
@@ -25,6 +26,7 @@ Momentum is an **internal Progress Tracking application for Redberry**, allowing
 Follow these steps to set up and run the project locally:
 
 ### 1. Install Dependencies:
+
 ```bash
 npm install
 # or
@@ -34,6 +36,7 @@ pnpm install
 ```
 
 ### 2. Run the Development Server:
+
 ```bash
 npm run dev
 # or
@@ -52,7 +55,6 @@ Then, open [http://localhost:3000](http://localhost:3000) in your browser.
 - **TypeScript** - A strongly typed superset of JavaScript
 - **Tailwind CSS** - A utility-first CSS framework
 
-
 ---
 
 ## 📚 Additional Resources
@@ -61,7 +63,6 @@ For more information, check out the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-
 
 ---
 
@@ -73,13 +74,12 @@ You can deploy Momentum on [Vercel](https://vercel.com):
 
 ---
 
-## 💡 Contribution
+## 💡 Author
 
-If you would like to contribute, feel free to open an **Issue** or submit a **Pull Request** on GitHub.
+Merab Samkharadze
 
 ---
 
 ## 📄 License
 
 MIT License. Feel free to use and modify Momentum!
-
